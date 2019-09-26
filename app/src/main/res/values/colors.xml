@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhite2">#7CFFFFFF</color>
+    <color name="colorWhite3">#9AFFFFFF</color>
+    <color name="colorWhite4">#CCFFFFFF</color>
+    <color name="colorWhite0">#00FFFFFF</color>
+
+
+    <color name="colorBlack">#000000</color>
+    <color name="colorAccent2">#54D81B60</color>
+    <color name="colorAccent3">#54C79EAC</color>
+
+    <color name="lineColor">#92EB9706</color>
+    <color name="topColor">#F4B183</color>
+    <color name="buttomColor">#D0FBE5D6</color>
+    <color name="buttomColor2">#99C79EAC</color>
+
+    <color name="line2Color">#08285C</color>
+    <color name="top3Color">#653E72D1</color>
+    <color name="top2Color">#4D6692E4</color>
+    <color name="buttom2Color">#66D6DBFB</color>
+    <color name="buttom3Color">#D6DBFB</color>
+    <color name="colorTurquoise">#9DC3E6</color>
+    <color name="colorTurquoise2">#CC728291</color>
+    <color name="colorGrey">#B6B6B6</color>
+    <color name="colorGrey2">#EEEBEB</color>
+
+    <color name="colorTrans">#00FFFFFF</color>
+
+
+
+
+    <color name="colorRed">#CC0744</color>
+    <color name="colorBlue">#66053A92</color>
+
+
+
+
+
+
+</resources>

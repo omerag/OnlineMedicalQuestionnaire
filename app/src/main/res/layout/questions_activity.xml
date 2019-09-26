@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/question_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@color/colorWhite2"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/colorRed"
+                android:textSize="27sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/question_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="17dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/question_shape"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="גוף השאלה"
+                android:textColor="@color/line2Color"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:gravity="center"
+                android:paddingHorizontal="10dp"
+                android:text="בחירת תשובה"
+                android:textColor="@color/colorRed"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:textColor="@color/line2Color"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:id="@+id/ll_quntity"
+                >
+                <NumberPicker
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/colorTrans"
+                    android:id="@+id/num_pick"
+                    android:descendantFocusability="blocksDescendants"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:textColor="@color/line2Color"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:id="@+id/ll_binary"
+                android:visibility="gone">
+
+                <RadioGroup
+                    android:id="@+id/answer_group_bin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <RadioButton
+                        android:id="@+id/answer0_radio_bin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/question_shape"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="10dp"
+                        android:text="(0)     בכלל לא"
+                        android:textColor="@color/line2Color"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:checked="false"/>
+
+                    <RadioButton
+                        android:id="@+id/answer1_radio_bin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/question_shape"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="10dp"
+                        android:text="(1)   אחת לחמש פעמים"
+                        android:textColor="@color/line2Color"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:textColor="@color/line2Color"
+                android:textSize="30sp"
+                android:visibility="gone"
+                android:id="@+id/ll_quality"
+                android:textStyle="bold">
+
+                <RadioGroup
+                    android:id="@+id/answer_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <RadioButton
+                        android:id="@+id/answer0_radio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/question_shape"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="10dp"
+                        android:text="(0)     בכלל לא"
+                        android:textColor="@color/line2Color"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:checked="false"/>
+
+                    <RadioButton
+                        android:id="@+id/answer1_radio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/question_shape"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="10dp"
+                        android:text="(1)   אחת לחמש פעמים"
+                        android:textColor="@color/line2Color"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/answer2_radio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/question_shape"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="10dp"
+                        android:text="(2)   פחות ממחצית המקרים"
+                        android:textColor="@color/line2Color"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/answer3_radio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/question_shape"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="10dp"
+                        android:text="(3)   כמחצית המקרים"
+                        android:textColor="@color/line2Color"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/answer4_radio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/question_shape"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="10dp"
+                        android:text="(4)   יותר ממחצית המקרים"
+                        android:textColor="@color/line2Color"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/answer5_radio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/question_shape"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="10dp"
+                        android:text="(5)   כמעט תמיד"
+                        android:textColor="@color/line2Color"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="25dp"
+                android:background="@color/colorWhite2"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:textColor="@color/line2Color"
+                android:textSize="30sp"
+                android:textStyle="bold" >
+
+
+                <Button
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/shape"
+                    android:gravity="center"
+                    android:paddingHorizontal="15dp"
+                    android:text="חזרה"
+                    android:textColor="@color/line2Color"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/continueBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/shape"
+                    android:gravity="center"
+                    android:paddingHorizontal="15dp"
+                    android:text="המשך"
+                    android:textColor="@color/line2Color"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
