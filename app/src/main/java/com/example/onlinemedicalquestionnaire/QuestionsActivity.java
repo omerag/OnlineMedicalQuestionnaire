@@ -27,44 +27,30 @@ import java.util.Random;
 public class QuestionsActivity extends AppCompatActivity {
 
     int size;
+    int curr_question = 0;
     int curr_quetion_display;
     int curr_answer;
-
     int resultOfNumberPicker = -1;
-
-
-    int currentQuestion = 0;
 
     TextView question_title;
     TextView question_body;
 
-    RadioGroup answer_group;
-//    RadioButton answer0_radio;
-//    RadioButton answer1_radio;
-//    RadioButton answer2_radio;
-//    RadioButton answer3_radio;
-//    RadioButton answer4_radio;
-//    RadioButton answer5_radio;
-
-
-
-    RadioButton answer0_radio_bin;
-    RadioButton answer1_radio_bin;
-
-    NumberPicker numberPicker;
+    RadioGroup answer_group;        // Quality
+    RadioGroup answer_group_bin;    // Binary
+    NumberPicker numberPicker;      // Quantity
 
     ArrayList<Question> questions;
     ArrayList<Answer> answers;
-    ArrayList<RadioButton> radioButtons = new ArrayList<>();
-
-    int curr_question = 0;
+    ArrayList<RadioButton> radioButtons = new ArrayList<>();       // Quality
+    ArrayList<RadioButton> radioButtonsBin = new ArrayList<>();    // Binary
 
     Button backBtn;
-    Button continueBtn;
+    Button nextBtn;
     ScrollView scrollView;
-    LinearLayout linearLayoutQuality;
-    LinearLayout linearLayoutQuantity;
-    LinearLayout linearLayoutBinary;
+
+    LinearLayout quality_layout;
+    LinearLayout binary_layout;
+    LinearLayout quantity_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +59,18 @@ public class QuestionsActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.questions_activity);
 
-        linearLayoutBinary = findViewById(R.id.ll_binary);
-        linearLayoutQuantity = findViewById(R.id.ll_quntity);
-        linearLayoutQuality = findViewById(R.id.ll_quality);
+        quality_layout = findViewById(R.id.quality_layout);
+        binary_layout = findViewById(R.id.binary_layout);
+        quantity_layout = findViewById(R.id.quantity_layout);
+
 
         question_title = findViewById(R.id.question_title);
         question_body = findViewById(R.id.question_body);
 
+
+        numberPicker = findViewById(R.id.num_pick);
+
+        // Quality
         answer_group = findViewById(R.id.answer_group);
         RadioButton answer0_radio = findViewById(R.id.answer0_radio);
         RadioButton answer1_radio = findViewById(R.id.answer1_radio);
@@ -88,8 +79,6 @@ public class QuestionsActivity extends AppCompatActivity {
         RadioButton answer4_radio = findViewById(R.id.answer4_radio);
         RadioButton answer5_radio = findViewById(R.id.answer5_radio);
 
-        numberPicker = findViewById(R.id.num_pick);
-
         radioButtons.add(answer0_radio);
         radioButtons.add(answer1_radio);
         radioButtons.add(answer2_radio);
@@ -97,46 +86,45 @@ public class QuestionsActivity extends AppCompatActivity {
         radioButtons.add(answer4_radio);
         radioButtons.add(answer5_radio);
 
-        answer0_radio_bin = findViewById(R.id.answer0_radio_bin);
-        answer1_radio_bin = findViewById(R.id.answer1_radio_bin);
+        // Binary
+        answer_group_bin = findViewById(R.id.answer_group_bin);
+        RadioButton answer0_radio_bin = findViewById(R.id.answer0_radio_bin);
+        RadioButton answer1_radio_bin = findViewById(R.id.answer1_radio_bin);
 
+        radioButtonsBin.add(answer0_radio_bin);
+        radioButtonsBin.add(answer1_radio_bin);
 
         backBtn = findViewById(R.id.backBtn);
-        continueBtn = findViewById(R.id.continueBtn);
+        nextBtn = findViewById(R.id.nextBtn);
         scrollView = findViewById(R.id.scrollView);
 
 
         NextAndBack nextAndBack = new NextAndBack();
         backBtn.setOnClickListener(nextAndBack);
-        continueBtn.setOnClickListener(nextAndBack);
+        nextBtn.setOnClickListener(nextAndBack);
 
-        final ArrayList<String> questions1 = new ArrayList<>();
-        questions1.add("כמה פעמים במהלך היום הרגשת שנשאר לך שתן לאחר השתנה?");
-        questions1.add("כמה פעמים במהלך היום היית צריכ/ה להשתין כל שעתיים או פחות?");
-        questions1.add("כמה פעמים במהלך היום חשת בהפסקות במהלך ההשתנה?");
-        questions1.add("כמה פעמים במהלך היום היה לך קשה להתאפק?");
-        questions1.add("כמה פעמים במהלך היום שמת לב לזרימת שתן חלשה?");
-        questions1.add("כמה פעמים במהלך היום היה לך צורך ללחוץ או להתאמץ כדי להתחיל להשתין?");
-        questions1.add("כמה פעמים בלילה האחרון קמת כדי להשתין?");
+        final ArrayList<String> questionsTitle = new ArrayList<>();
+        questionsTitle.add("כמה פעמים במהלך היום הרגשת שנשאר לך שתן לאחר השתנה?");
+        questionsTitle.add("כמה פעמים במהלך היום היית צריכ/ה להשתין כל שעתיים או פחות?");
+        questionsTitle.add("כמה פעמים במהלך היום חשת בהפסקות במהלך ההשתנה?");
+        questionsTitle.add("כמה פעמים במהלך היום היה לך קשה להתאפק?");
+        questionsTitle.add("כמה פעמים במהלך היום שמת לב לזרימת שתן חלשה?");
+        questionsTitle.add("כמה פעמים במהלך היום היה לך צורך ללחוץ או להתאמץ כדי להתחיל להשתין?");
+        questionsTitle.add("כמה פעמים בלילה האחרון קמת כדי להשתין?");
 
 
         numberPicker.setMaxValue(10);
         numberPicker.setMinValue(0);
 
-        //Log.i("hola" , questions.get(1));
-
         questions = new ArrayList<>();
 
-
-
-        // Random random = new Random();
-        for (int i = 0; i < 7; i++) {
-            //int r = random.nextInt(3);
-            questions.add(new Question(i, i % 3, questions1.get(i)));
+        for (int i = 0; i <= 6; i++) {
+            questions.add(new Question(i, i % 3, questionsTitle.get(i)));
         }
-        question_body.setText(questions.get(currentQuestion).text);
-        size = questions.size() - 1;
-        curr_quetion_display = currentQuestion + 1;
+
+        question_body.setText(questions.get(curr_question).text);
+        size = questions.size();
+        curr_quetion_display = curr_question + 1;
 
         question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
 
@@ -149,12 +137,11 @@ public class QuestionsActivity extends AppCompatActivity {
         }
 
 
-
         numberPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
             @Override
             public void onScrollStateChange(NumberPicker numberPicker, int i) {
-               // resultOfNumberPicker = i;
-                answers.get(curr_answer).setResult(i);
+                // resultOfNumberPicker = i;
+                answers.get(curr_question).setResult(i);
             }
         });
 
@@ -163,45 +150,51 @@ public class QuestionsActivity extends AppCompatActivity {
 
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     class NextAndBack implements View.OnClickListener {
         @Override
         public void onClick(View view) {
 
-            if (view == continueBtn && answers.get(curr_question).result == -1) { // open dialog Did not choose Option
+            // Saving
+            if (questions.get(curr_question).type == 0) { // Number Picker It is.
+                //   answers.get(curr_question).setResult(resultOfNumberPicker);
+            } else {
+                answers.get(curr_question).setResult(curr_answer); // curr_answer is between 0 to 5
+            }
 
-
+            if (view == nextBtn && answers.get(curr_question).result == -1) { // didn't choose option
+                //didntChoose();
 
             } else {
 
+                if (view == nextBtn && curr_question == questions.size() - 1) { // last question
+                    lastQuestion();
 
-                if (view == continueBtn && currentQuestion == questions.size() - 1) { // sending The
-
-                } else if (view == backBtn && currentQuestion == 0) { // Open Dialog Are your Sure...
+                } else if (view == backBtn && curr_question == 0) { // first question
+                    firstQuestion();
 
                 } else {
 
-                    // Saving
-                    if (questions.get(currentQuestion).type == 0) { // Number Picker It is.
-                     //   answers.get(currentQuestion).setResult(resultOfNumberPicker);
-                    } else {
-                        answers.get(currentQuestion).setResult(curr_answer); // curr_answer is between 0 to 5
-                    }
-
                     if (view == backBtn) {
-                        currentQuestion--;
+                        curr_question--;
+                        curr_quetion_display = curr_question + 1;
+                        question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
 
                     } else {
-                        currentQuestion++;
+                        curr_question++;
+                        curr_quetion_display = curr_question + 1;
+                        question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
                     }
                     // Load  Ui
                     layoutSwitch();
 
                     //Put The text Body
-                    question_body.setText(questions.get(currentQuestion).text);
+                    question_body.setText(questions.get(curr_question).text);
 
                     // Load Answer
-                    int typeOfQuestion = questions.get(currentQuestion).type;
-                    int num = answers.get(currentQuestion).getResult();
+                    int typeOfQuestion = questions.get(curr_question).type;
+                    int num = answers.get(curr_question).getResult();
 
                     if (typeOfQuestion == 0) { // Number Picker It is. Quantity
                         if (num != -1) {
@@ -219,16 +212,21 @@ public class QuestionsActivity extends AppCompatActivity {
         }
     }
 
-    void resetBackground() {
-        // Reset Binary RadiosBtn
-        answer1_radio_bin.setBackgroundResource(R.drawable.question_shape);
-        answer0_radio_bin.setBackgroundResource(R.drawable.question_shape);
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        // Reset Quality RadiosBtn
+    void resetBackground() {
+
+        // Reset Binary RadioBtns
+        for (int i = 0; i < radioButtonsBin.size(); i++)
+            radioButtonsBin.get(i).setBackgroundResource(R.drawable.question_shape);
+
+        // Reset Quality RadioBtns
         for (int i = 0; i < radioButtons.size(); i++) {
             radioButtons.get(i).setBackgroundResource(R.drawable.question_shape);
         }
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void changeRadioBackground(int i, int typeOfQuestion) { // i = clicked Item ;
         if (typeOfQuestion == 2) { // Quantity
@@ -236,54 +234,45 @@ public class QuestionsActivity extends AppCompatActivity {
             radioButtons.get(i).setChecked(true);
 
         } else { // Binary
-            switch (i) {
-                case 0:
-                    answer0_radio_bin.setBackgroundResource(R.drawable.sel_answer_shape);
-                    answer0_radio_bin.setChecked(true);
-                    break;
-                case 1:
-                    answer1_radio_bin.setChecked(true);
-                    answer1_radio_bin.setBackgroundResource(R.drawable.sel_answer_shape);
-                    break;
-            }
+            radioButtonsBin.get(i).setBackgroundResource(R.drawable.sel_answer_shape);
+            radioButtonsBin.get(i).setChecked(true);
         }
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void layoutSwitch() {
 
+        if (questions.get(curr_question).type == 0) { // Quantity
+            quantity_layout.setVisibility(View.VISIBLE);
+            binary_layout.setVisibility(View.GONE);
+            quality_layout.setVisibility(View.GONE);
 
-        if (questions.get(currentQuestion).type == 0) {// כמותי
-            linearLayoutQuantity.setVisibility(View.VISIBLE);
+        } else if (questions.get(curr_question).type == 1) {// Binary
+            binary_layout.setVisibility(View.VISIBLE);
+            quantity_layout.setVisibility(View.GONE);
+            quality_layout.setVisibility(View.GONE);
 
-            linearLayoutBinary.setVisibility(View.GONE);
-            linearLayoutQuality.setVisibility(View.GONE);
-        } else if (questions.get(currentQuestion).type == 1) { // Binary
-            linearLayoutBinary.setVisibility(View.VISIBLE);
-
-            linearLayoutQuantity.setVisibility(View.GONE);
-            linearLayoutQuality.setVisibility(View.GONE);
         } else {  // Quality
-            linearLayoutQuality.setVisibility(View.VISIBLE);
-
-            linearLayoutQuantity.setVisibility(View.GONE);
-            linearLayoutBinary.setVisibility(View.GONE);
+            quality_layout.setVisibility(View.VISIBLE);
+            quantity_layout.setVisibility(View.GONE);
+            binary_layout.setVisibility(View.GONE);
         }
     }
 
-    // Listener To Quantity Layout Its Anonymous shhhhh....
-
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Listener To Binary Layout
     class RadiosBinary implements RadioGroup.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            curr_answer = i;
-            if (i == R.id.answer0_radio_bin) {
-                answer0_radio_bin.setBackgroundResource(R.drawable.sel_answer_shape);
-                answer1_radio_bin.setBackgroundResource(R.drawable.question_shape);
-            } else { // i == 1
-                answer0_radio_bin.setBackgroundResource(R.drawable.question_shape);
-                answer1_radio_bin.setBackgroundResource(R.drawable.sel_answer_shape);
+            for (int j = 0; j < radioButtonsBin.size(); j++) {
+                if (radioButtonsBin.get(j).getId() == i) {
+                    curr_answer = j;
+                    radioButtonsBin.get(j).setBackgroundResource(R.drawable.sel_answer_shape);
+                } else {
+                    radioButtonsBin.get(j).setBackgroundResource(R.drawable.question_shape);
+                }
             }
         }
     }
@@ -301,112 +290,97 @@ public class QuestionsActivity extends AppCompatActivity {
                     radioButtons.get(j).setBackgroundResource(R.drawable.question_shape);
                 }
             }
-
         }
 
     }
 
+    // Listener to Quantity Layout(Number Picker) it's anonymous
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void didntChoose(){
+        final AlertDialog dialog = new AlertDialog.Builder(QuestionsActivity.this).create();
+        final View dialogView = getLayoutInflater().inflate(R.layout.didnt_choose_dialog, null);
+        Button ok_btn = dialogView.findViewById(R.id.ok_btn);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setView(dialogView);
+        dialog.setCanceledOnTouchOutside(false);
+
+        ok_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void firstQuestion() {
+        final AlertDialog dialog = new AlertDialog.Builder(QuestionsActivity.this).create();
+        final View dialogView = getLayoutInflater().inflate(R.layout.exit_questionnaire_dialog, null);
+        TextView exit_tv = dialogView.findViewById(R.id.exit_tv);
+        TextView exit_tv2 = dialogView.findViewById(R.id.exit_tv2);
+        Button finish_btn = dialogView.findViewById(R.id.finish_btn);
+        Button continueBtn = dialogView.findViewById(R.id.continue_btn);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setView(dialogView);
+        dialog.setCanceledOnTouchOutside(false);
+
+
+        finish_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(QuestionsActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void lastQuestion() {
+        final AlertDialog dialog = new AlertDialog.Builder(QuestionsActivity.this).create();
+        final View dialogView = getLayoutInflater().inflate(R.layout.finish_dialog, null);
+        TextView finish_tv = dialogView.findViewById(R.id.finish_tv);
+        Button send_btn = dialogView.findViewById(R.id.send_btn);
+        Button back_btn = dialogView.findViewById(R.id.back_btn);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setView(dialogView);
+        dialog.setCanceledOnTouchOutside(false);
+
+
+        send_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(QuestionsActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
-
-
-//        for( ; currentQuestion < questions.size() ; currentQuestion++){
-//            if(questions.get(currentQuestion).type == 0){// כמותי
-//                linearLayoutQuantity.setVisibility(View.VISIBLE);
-//
-//                linearLayoutBinary.setVisibility(View.GONE);
-//                linearLayoutQuality.setVisibility(View.GONE);
-//            }else if(questions.get(currentQuestion).type == 1){ // Binary
-//                linearLayoutBinary.setVisibility(View.VISIBLE);
-//
-//                linearLayoutQuantity.setVisibility(View.GONE);
-//                linearLayoutQuality.setVisibility(View.GONE);
-//            }else{  // Quality
-//                linearLayoutQuality.setVisibility(View.VISIBLE);
-//
-//                linearLayoutQuantity.setVisibility(View.GONE);
-//                linearLayoutBinary.setVisibility(View.GONE);
-//
-//
-//
-//            }
-//        }
-
-//        answer1_radio.setBackgroundResource(R.drawable.question_shape);
-//        answer2_radio.setBackgroundResource(R.drawable.question_shape);
-//        answer3_radio.setBackgroundResource(R.drawable.question_shape);
-//        answer4_radio.setBackgroundResource(R.drawable.question_shape);
-//        answer5_radio.setBackgroundResource(R.drawable.question_shape);
-//        answer0_radio.setBackgroundResource(R.drawable.question_shape);
-
-//
-//      switch (i){
-//
-//              case R.id.answer0_radio:{
-//              answer1_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer2_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer3_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer4_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer5_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer0_radio.setBackgroundResource(R.drawable.sel_answer_shape);
-//
-//              // answers.set(curr_question, 0);
-//              break;
-//              }
-//
-//              case R.id.answer1_radio:{
-//              answer0_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer2_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer3_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer4_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer5_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer1_radio.setBackgroundResource(R.drawable.sel_answer_shape);
-//              //answers.set(curr_question, 1);
-//              break;
-//              }
-//
-//              case R.id.answer2_radio:{
-//              answer0_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer1_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer3_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer4_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer5_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer2_radio.setBackgroundResource(R.drawable.sel_answer_shape);
-//              //  answers.set(curr_question, 2);
-//              break;
-//              }
-//
-//              case R.id.answer3_radio:{
-//              answer0_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer1_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer2_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer4_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer5_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer3_radio.setBackgroundResource(R.drawable.sel_answer_shape);
-//              //  answers.set(curr_question, 3);
-//              break;
-//              }
-//
-//              case R.id.answer4_radio:{
-//              answer0_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer1_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer2_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer3_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer5_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer4_radio.setBackgroundResource(R.drawable.sel_answer_shape);
-//              //  answers.set(curr_question, 4);
-//              break;
-//              }
-//
-//              case R.id.answer5_radio:{
-//              answer0_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer1_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer2_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer3_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer4_radio.setBackgroundResource(R.drawable.question_shape);
-//              answer5_radio.setBackgroundResource(R.drawable.sel_answer_shape);
-//              //  answers.set(curr_question, 5);
-//              break;
-//              }
-//
-//              }

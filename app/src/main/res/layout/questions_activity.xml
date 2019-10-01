@@ -59,7 +59,7 @@
 
 
             <LinearLayout
-
+                android:id="@+id/quantity_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -71,13 +71,12 @@
                 android:textSize="30sp"
                 android:textStyle="bold"
                 android:visibility="gone"
-                android:id="@+id/ll_quntity"
                 >
                 <NumberPicker
+                    android:id="@+id/num_pick"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:background="@color/colorTrans"
-                    android:id="@+id/num_pick"
+                    android:background="@drawable/question_shape"
                     android:descendantFocusability="blocksDescendants"
                     />
 
@@ -85,7 +84,7 @@
             </LinearLayout>
 
             <LinearLayout
-
+                android:id="@+id/binary_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -96,7 +95,6 @@
                 android:textColor="@color/line2Color"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                android:id="@+id/ll_binary"
                 android:visibility="gone">
 
                 <RadioGroup
@@ -114,7 +112,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="10dp"
-                        android:text="(0)     בכלל לא"
+                        android:text="(0)   לא"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -128,7 +126,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="10dp"
-                        android:text="(1)   אחת לחמש פעמים"
+                        android:text="(1)   כן"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -138,6 +136,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/quality_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -148,7 +147,6 @@
                 android:textColor="@color/line2Color"
                 android:textSize="30sp"
                 android:visibility="gone"
-                android:id="@+id/ll_quality"
                 android:textStyle="bold">
 
                 <RadioGroup
@@ -270,7 +268,7 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/continueBtn"
+                    android:id="@+id/nextBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
