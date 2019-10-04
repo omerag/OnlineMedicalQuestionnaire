@@ -29,9 +29,7 @@ public class QuestionsActivity extends AppCompatActivity {
     int size;
     int curr_question = 0;
     int curr_quetion_display;
-    int curr_answer;
-    int resultOfNumberPicker = -1;
-
+    int curr_answer = -1;
     TextView question_title;
     TextView question_body;
 
@@ -99,9 +97,9 @@ public class QuestionsActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView);
 
 
-        NextAndBack nextAndBack = new NextAndBack();
-        backBtn.setOnClickListener(nextAndBack);
-        nextBtn.setOnClickListener(nextAndBack);
+        //NextAndBack nextAndBack = new NextAndBack();
+        //backBtn.setOnClickListener(nextAndBack);
+        //nextBtn.setOnClickListener(nextAndBack);
 
         final ArrayList<String> questionsTitle = new ArrayList<>();
         questionsTitle.add("כמה פעמים במהלך היום הרגשת שנשאר לך שתן לאחר השתנה?");
@@ -122,12 +120,11 @@ public class QuestionsActivity extends AppCompatActivity {
             questions.add(new Question(i, i % 3, questionsTitle.get(i)));
         }
 
+        // first question
         question_body.setText(questions.get(curr_question).text);
         size = questions.size();
         curr_quetion_display = curr_question + 1;
-
         question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
-
         layoutSwitch();
 
         answers = new ArrayList<>();
@@ -136,81 +133,110 @@ public class QuestionsActivity extends AppCompatActivity {
             answers.add(new Answer(id, type, -1));
         }
 
-
+        // Listener to Quantity layout(Number Picker) it's anonymous
         numberPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
             @Override
             public void onScrollStateChange(NumberPicker numberPicker, int i) {
-                // resultOfNumberPicker = i;
-                answers.get(curr_question).setResult(i);
+                curr_answer = i;
+
             }
         });
 
-        RadiosChanger radiosChanger = new RadiosChanger();
-        answer_group.setOnCheckedChangeListener(radiosChanger);
+        qualityRadiosChanger qualityRadiosChanger = new qualityRadiosChanger();
+        answer_group.setOnCheckedChangeListener(qualityRadiosChanger);
+
+        binaryRadiosChanger binaryRadiosChanger = new binaryRadiosChanger();
+        answer_group.setOnCheckedChangeListener(binaryRadiosChanger);
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (questions.get(curr_question).type == 0) { // Quantity: number picker
+                    if (curr_answer == -1) {
+                        didntChoose();
+                    } else {
+                        answers.get(curr_question).setResult(curr_answer);
+                        setNextQuestion();
+                        numberPicker.setValue(0);
+                        curr_answer = -1;
+
+                    }
+                }
+
+                else { // Binary or Quality
+                    if (curr_answer == -1) {
+                        didntChoose();
+                    } else {
+                        answers.get(curr_question).setResult(curr_answer);
+                        setNextQuestion();
+                        curr_answer = -1;
+
+                    }
+                }
+            }
+        });
+
 
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    class NextAndBack implements View.OnClickListener {
+    void layoutSwitch() {
+
+        if (questions.get(curr_question).type == 0) { // Quantity
+            quantity_layout.setVisibility(View.VISIBLE);
+            binary_layout.setVisibility(View.GONE);
+            quality_layout.setVisibility(View.GONE);
+
+        } else if (questions.get(curr_question).type == 1) {// Binary
+            binary_layout.setVisibility(View.VISIBLE);
+            quantity_layout.setVisibility(View.GONE);
+            quality_layout.setVisibility(View.GONE);
+
+        } else {  // Quality
+            quality_layout.setVisibility(View.VISIBLE);
+            quantity_layout.setVisibility(View.GONE);
+            binary_layout.setVisibility(View.GONE);
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Listener to Binary layout
+    class binaryRadiosChanger implements RadioGroup.OnCheckedChangeListener {
         @Override
-        public void onClick(View view) {
+        public void onCheckedChanged(RadioGroup radioGroup, int i) { // i = 12753217124342;
 
-            // Saving
-            if (questions.get(curr_question).type == 0) { // Number Picker It is.
-                //   answers.get(curr_question).setResult(resultOfNumberPicker);
-            } else {
-                answers.get(curr_question).setResult(curr_answer); // curr_answer is between 0 to 5
-            }
-
-            if (view == nextBtn && answers.get(curr_question).result == -1) { // didn't choose option
-                //didntChoose();
-
-            } else {
-
-                if (view == nextBtn && curr_question == questions.size() - 1) { // last question
-                    lastQuestion();
-
-                } else if (view == backBtn && curr_question == 0) { // first question
-                    firstQuestion();
-
+            for (int j = 0; j < radioButtonsBin.size(); j++) {
+                if (radioButtonsBin.get(j).getId() == i) {
+                    curr_answer = j;
+                    radioButtonsBin.get(j).setBackgroundResource(R.drawable.sel_answer_shape);
                 } else {
-
-                    if (view == backBtn) {
-                        curr_question--;
-                        curr_quetion_display = curr_question + 1;
-                        question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
-
-                    } else {
-                        curr_question++;
-                        curr_quetion_display = curr_question + 1;
-                        question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
-                    }
-                    // Load  Ui
-                    layoutSwitch();
-
-                    //Put The text Body
-                    question_body.setText(questions.get(curr_question).text);
-
-                    // Load Answer
-                    int typeOfQuestion = questions.get(curr_question).type;
-                    int num = answers.get(curr_question).getResult();
-
-                    if (typeOfQuestion == 0) { // Number Picker It is. Quantity
-                        if (num != -1) {
-                            numberPicker.setValue(num); // Scrolling to the Choosen answer
-                        }
-                    } else {
-                        if (num != -1) {
-                            resetBackground();
-                            changeRadioBackground(num, typeOfQuestion);
-
-                        }
-                    }
+                    radioButtonsBin.get(j).setBackgroundResource(R.drawable.question_shape);
                 }
             }
         }
+
     }
+
+    // Listener to Quality layout
+    class qualityRadiosChanger implements RadioGroup.OnCheckedChangeListener {
+        @Override
+        public void onCheckedChanged(RadioGroup radioGroup, int i) { // i = 12753217124342;
+
+            for (int j = 0; j < radioButtons.size(); j++) {
+                if (radioButtons.get(j).getId() == i) {
+                    curr_answer = j;
+                    radioButtons.get(j).setBackgroundResource(R.drawable.sel_answer_shape);
+                } else {
+                    radioButtons.get(j).setBackgroundResource(R.drawable.question_shape);
+                }
+            }
+        }
+
+    }
+
+    // Listener to Quantity layout(Number Picker) it's anonymous
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -241,65 +267,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    void layoutSwitch() {
-
-        if (questions.get(curr_question).type == 0) { // Quantity
-            quantity_layout.setVisibility(View.VISIBLE);
-            binary_layout.setVisibility(View.GONE);
-            quality_layout.setVisibility(View.GONE);
-
-        } else if (questions.get(curr_question).type == 1) {// Binary
-            binary_layout.setVisibility(View.VISIBLE);
-            quantity_layout.setVisibility(View.GONE);
-            quality_layout.setVisibility(View.GONE);
-
-        } else {  // Quality
-            quality_layout.setVisibility(View.VISIBLE);
-            quantity_layout.setVisibility(View.GONE);
-            binary_layout.setVisibility(View.GONE);
-        }
-    }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // Listener To Binary Layout
-    class RadiosBinary implements RadioGroup.OnCheckedChangeListener {
-        @Override
-        public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            for (int j = 0; j < radioButtonsBin.size(); j++) {
-                if (radioButtonsBin.get(j).getId() == i) {
-                    curr_answer = j;
-                    radioButtonsBin.get(j).setBackgroundResource(R.drawable.sel_answer_shape);
-                } else {
-                    radioButtonsBin.get(j).setBackgroundResource(R.drawable.question_shape);
-                }
-            }
-        }
-    }
-
-    // Listener To The Quality Layout
-    class RadiosChanger implements RadioGroup.OnCheckedChangeListener {
-        @Override
-        public void onCheckedChanged(RadioGroup radioGroup, int i) { // i = 12753217124342;
-
-            for (int j = 0; j < radioButtons.size(); j++) {
-                if (radioButtons.get(j).getId() == i) {
-                    curr_answer = j;
-                    radioButtons.get(j).setBackgroundResource(R.drawable.sel_answer_shape);
-                } else {
-                    radioButtons.get(j).setBackgroundResource(R.drawable.question_shape);
-                }
-            }
-        }
-
-    }
-
-    // Listener to Quantity Layout(Number Picker) it's anonymous
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    void didntChoose(){
+    void didntChoose() {
         final AlertDialog dialog = new AlertDialog.Builder(QuestionsActivity.this).create();
         final View dialogView = getLayoutInflater().inflate(R.layout.didnt_choose_dialog, null);
         Button ok_btn = dialogView.findViewById(R.id.ok_btn);
@@ -315,6 +283,15 @@ public class QuestionsActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void setNextQuestion() {
+        curr_question++;
+        curr_quetion_display = curr_question + 1;
+        layoutSwitch();
+        question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -380,6 +357,68 @@ public class QuestionsActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /*class NextAndBack implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+
+            // Saving
+            if (questions.get(curr_question).type == 0) { // Number Picker It is.
+                //   answers.get(curr_question).setResult(resultOfNumberPicker);
+            } else {
+                answers.get(curr_question).setResult(curr_answer); // curr_answer is between 0 to 5
+            }
+
+            if (view == nextBtn && answers.get(curr_question).result == -1) { // didn't choose option
+                //didntChoose();
+
+            } else {
+
+                if (view == nextBtn && curr_question == questions.size() - 1) { // last question
+                    lastQuestion();
+
+                } else if (view == backBtn && curr_question == 0) { // first question
+                    firstQuestion();
+
+                } else {
+
+                    if (view == backBtn) {
+                        curr_question--;
+                        curr_quetion_display = curr_question + 1;
+                        question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+
+                    } else {
+                        curr_question++;
+                        curr_quetion_display = curr_question + 1;
+                        question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+                    }
+                    // Load  Ui
+                    layoutSwitch();
+
+                    //Put The text Body
+                    question_body.setText(questions.get(curr_question).text);
+
+                    // Load Answer
+                    int typeOfQuestion = questions.get(curr_question).type;
+                    int num = answers.get(curr_question).getResult();
+
+                    if (typeOfQuestion == 0) { // Number Picker It is. Quantity
+                        if (num != -1) {
+                            numberPicker.setValue(num); // Scrolling to the Choosen answer
+                        }
+                    } else {
+                        if (num != -1) {
+                            resetBackground();
+                            changeRadioBackground(num, typeOfQuestion);
+
+                        }
+                    }
+                }
+            }
+        }
+    }*/
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
