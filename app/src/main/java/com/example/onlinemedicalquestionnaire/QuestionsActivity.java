@@ -96,11 +96,6 @@ public class QuestionsActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.nextBtn);
         scrollView = findViewById(R.id.scrollView);
 
-
-        //NextAndBack nextAndBack = new NextAndBack();
-        //backBtn.setOnClickListener(nextAndBack);
-        //nextBtn.setOnClickListener(nextAndBack);
-
         final ArrayList<String> questionsTitle = new ArrayList<>();
         questionsTitle.add("כמה פעמים במהלך היום הרגשת שנשאר לך שתן לאחר השתנה?");
         questionsTitle.add("כמה פעמים במהלך היום היית צריכ/ה להשתין כל שעתיים או פחות?");
@@ -117,7 +112,7 @@ public class QuestionsActivity extends AppCompatActivity {
         questions = new ArrayList<>();
 
         for (int i = 0; i <= 6; i++) {
-            questions.add(new Question(i, i%3, questionsTitle.get(i)));
+            questions.add(new Question(i, 1, questionsTitle.get(i)));
         }
 
         // first question
@@ -170,16 +165,151 @@ public class QuestionsActivity extends AppCompatActivity {
                     } else {
                         answers.get(curr_question).setResult(curr_answer);
                         setNextQuestion();
-                        curr_answer = -1;
-                        answer_group_bin.clearCheck();
-                        answer_group.clearCheck();
-                        resetBackground();
-
                     }
                 }
             }
         });
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setPrevQuestion();
+
+                int typeOfQuestion = questions.get(curr_question).type;
+                int loaded_answer = answers.get(curr_question).getResult();
+
+                if (typeOfQuestion == 0) { // Quantity: Number Picker
+                    numberPicker.setValue(loaded_answer);
+                } else {
+                    resetBackground();
+                    changeRadioBackground(loaded_answer, typeOfQuestion);
+                    curr_answer = loaded_answer;
+                }
+            }
+        });
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void setNextQuestion() {
+        scrollView.fullScroll(ScrollView.FOCUS_UP);
+        if (curr_question == questions.size() - 1) // Last question
+            lastQuestion();
+        else {
+            curr_question++;
+            curr_quetion_display = curr_question + 1;
+            layoutSwitch();
+            question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+            question_body.setText(questions.get(curr_question).text);
+
+            // Load answer
+            int typeOfQuestion = questions.get(curr_question).type;
+            int loaded_answer = answers.get(curr_question).getResult();
+            if (loaded_answer != -1) {  // next after back
+                //if (typeOfQuestion == 0) { // Quantity: Number Picker
+                //numberPicker.setValue(loaded_answer);
+                //} else {
+                curr_answer = loaded_answer;
+                resetBackground();
+                changeRadioBackground(curr_answer, typeOfQuestion);
+            } else {    // next at the first time
+                curr_answer = -1;
+                answer_group_bin.clearCheck();
+                answer_group.clearCheck();
+                resetBackground();
+            }
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void setPrevQuestion() {
+        scrollView.fullScroll(ScrollView.FOCUS_UP);
+        if (curr_question == 0) // First question
+            firstQuestion();
+        else {
+            curr_question--;
+            curr_quetion_display = curr_question + 1;
+            layoutSwitch();
+            question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+            question_body.setText(questions.get(curr_question).text);
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void firstQuestion() {
+        final AlertDialog dialog = new AlertDialog.Builder(QuestionsActivity.this).create();
+        final View dialogView = getLayoutInflater().inflate(R.layout.exit_questionnaire_dialog, null);
+        TextView exit_tv = dialogView.findViewById(R.id.exit_tv);
+        TextView exit_tv2 = dialogView.findViewById(R.id.exit_tv2);
+        Button finish_btn = dialogView.findViewById(R.id.finish_btn);
+        Button continueBtn = dialogView.findViewById(R.id.continue_btn);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setView(dialogView);
+        dialog.setCanceledOnTouchOutside(false);
+
+
+        finish_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(QuestionsActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void lastQuestion() {
+        final AlertDialog dialog = new AlertDialog.Builder(QuestionsActivity.this).create();
+        final View dialogView = getLayoutInflater().inflate(R.layout.finish_dialog, null);
+        TextView finish_tv = dialogView.findViewById(R.id.finish_tv);
+        Button send_btn = dialogView.findViewById(R.id.send_btn);
+        Button back_btn = dialogView.findViewById(R.id.back_btn);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setView(dialogView);
+        dialog.setCanceledOnTouchOutside(false);
+
+
+        send_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(QuestionsActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+
+                // Load last answer:
+                int typeOfQuestion = questions.get(curr_question).type;
+                int loaded_answer = answers.get(curr_question).getResult();
+
+                //if (typeOfQuestion == 0) { // Quantity: Number Picker
+                //numberPicker.setValue(loaded_answer);
+                //} else {
+                resetBackground();
+                changeRadioBackground(loaded_answer, typeOfQuestion);
+                curr_answer = loaded_answer;
+            }
+        });
+
+        dialog.show();
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -288,117 +418,8 @@ public class QuestionsActivity extends AppCompatActivity {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    void setNextQuestion() {
-        if (curr_question == questions.size() - 1) // Last question
-            lastQuestion();
-        else {
-            curr_question++;
-            curr_quetion_display = curr_question + 1;
-            layoutSwitch();
-            question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
-        }
-    }
+    /*
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    void firstQuestion() {
-        final AlertDialog dialog = new AlertDialog.Builder(QuestionsActivity.this).create();
-        final View dialogView = getLayoutInflater().inflate(R.layout.exit_questionnaire_dialog, null);
-        TextView exit_tv = dialogView.findViewById(R.id.exit_tv);
-        TextView exit_tv2 = dialogView.findViewById(R.id.exit_tv2);
-        Button finish_btn = dialogView.findViewById(R.id.finish_btn);
-        Button continueBtn = dialogView.findViewById(R.id.continue_btn);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setView(dialogView);
-        dialog.setCanceledOnTouchOutside(false);
-
-
-        finish_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(QuestionsActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        continueBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    void lastQuestion() {
-        final AlertDialog dialog = new AlertDialog.Builder(QuestionsActivity.this).create();
-        final View dialogView = getLayoutInflater().inflate(R.layout.finish_dialog, null);
-        TextView finish_tv = dialogView.findViewById(R.id.finish_tv);
-        Button send_btn = dialogView.findViewById(R.id.send_btn);
-        Button back_btn = dialogView.findViewById(R.id.back_btn);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setView(dialogView);
-        dialog.setCanceledOnTouchOutside(false);
-
-
-        send_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(QuestionsActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        back_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /*class NextAndBack implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-
-            // Saving
-            if (questions.get(curr_question).type == 0) { // Number Picker It is.
-                //   answers.get(curr_question).setResult(resultOfNumberPicker);
-            } else {
-                answers.get(curr_question).setResult(curr_answer); // curr_answer is between 0 to 5
-            }
-
-            if (view == nextBtn && answers.get(curr_question).result == -1) { // didn't choose option
-                //didntChoose();
-
-            } else {
-
-                if (view == nextBtn && curr_question == questions.size() - 1) { // last question
-                    lastQuestion();
-
-                } else if (view == backBtn && curr_question == 0) { // first question
-                    firstQuestion();
-
-                } else {
-
-                    if (view == backBtn) {
-                        curr_question--;
-                        curr_quetion_display = curr_question + 1;
-                        question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
-
-                    } else {
-                        curr_question++;
-                        curr_quetion_display = curr_question + 1;
-                        question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
-                    }
                     // Load  Ui
                     layoutSwitch();
 
