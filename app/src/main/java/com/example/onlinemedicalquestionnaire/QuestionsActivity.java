@@ -124,51 +124,24 @@ public class QuestionsActivity extends AppCompatActivity {
 
         answers = new ArrayList<>();
         for (int i = 0; i < questions.size(); i++) {
-            int id = questions.get(i).id, type = questions.get(i).type;
+            int id = questions.get(i).id;
+            int type = questions.get(i).type;
             answers.add(new Answer(id, type, -1));
         }
 
         qualityRadiosChanger qualityRadiosChanger = new qualityRadiosChanger();
         final binaryRadiosChanger binaryRadiosChanger = new binaryRadiosChanger();
 
-            numberPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
-                @Override
-                public void onScrollStateChange(NumberPicker numberPicker, int i) {
-                    curr_answer = i;
-
-                }
-            });
-
-            answer_group_bin.setOnCheckedChangeListener(binaryRadiosChanger);
-            answer_group.setOnCheckedChangeListener(qualityRadiosChanger);
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        nextBtn.setOnClickListener(new View.OnClickListener() {
+        numberPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
             @Override
-            public void onClick(View view) {
-                if (questions.get(curr_question).type == 0) { // Quantity: number picker
-                    if (curr_answer == -1) {
-                        didntChoose();
-                    } else {
-                        answers.get(curr_question).setResult(curr_answer);
-                        setNextQuestion();
-                        numberPicker.setValue(0);
-                        curr_answer = -1;
+            public void onScrollStateChange(NumberPicker numberPicker, int i) {
+                curr_answer = i;
 
-                    }
-                }
-
-                else { // Binary or Quality
-                    if (curr_answer == -1) {
-                        didntChoose();
-                    } else {
-                        answers.get(curr_question).setResult(curr_answer);
-                        setNextQuestion();
-                    }
-                }
             }
         });
+
+        answer_group_bin.setOnCheckedChangeListener(binaryRadiosChanger);
+        answer_group.setOnCheckedChangeListener(qualityRadiosChanger);
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -189,41 +162,65 @@ public class QuestionsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (questions.get(curr_question).type == 0) { // Quantity: number picker
+                    if (curr_answer == -1) {
+                        didntChoose();
+                    } else {
+                        answers.get(curr_question).setResult(curr_answer);
+                        setNextQuestion();
+                        numberPicker.setValue(0);
+                    }
+                } else { // Binary or Quality
+                    if (curr_answer == -1) {
+                        didntChoose();
+                    } else {
+                        answers.get(curr_question).setResult(curr_answer);
+                        setNextQuestion();
+                    }
+                }
+            }
+        });
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    void setNextQuestion() {
-        scrollView.fullScroll(ScrollView.FOCUS_UP);
-        if (curr_question == questions.size() - 1) // Last question
-            lastQuestion();
-        else {
-            curr_question++;
-            curr_quetion_display = curr_question + 1;
-            layoutSwitch();
-            question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
-            question_body.setText(questions.get(curr_question).text);
+        void setNextQuestion() {
+            scrollView.fullScroll(ScrollView.FOCUS_UP);
+            if (curr_question == questions.size() - 1) // Last question
+                lastQuestion();
+            else {
+                curr_question++;
+                curr_quetion_display = curr_question + 1;
+                layoutSwitch();
+                question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+                question_body.setText(questions.get(curr_question).text);
 
-            // Load answer
-            int typeOfQuestion = questions.get(curr_question).type;
-            int loaded_answer = answers.get(curr_question).getResult();
-            if (loaded_answer != -1) {  // next after back
-                //if (typeOfQuestion == 0) { // Quantity: Number Picker
-                //numberPicker.setValue(loaded_answer);
-                //} else {
-                curr_answer = loaded_answer;
-                resetBackground();
-                changeRadioBackground(curr_answer, typeOfQuestion);
-            } else {    // next at the first time
-                curr_answer = -1;
-                answer_group_bin.clearCheck();
-                answer_group.clearCheck();
-                resetBackground();
+                // Load answer
+                int typeOfQuestion = questions.get(curr_question).type;
+                int loaded_answer = answers.get(curr_question).getResult();
+                if (loaded_answer != -1) {  // next after back
+                    //if (typeOfQuestion == 0) { // Quantity: Number Picker
+                    //numberPicker.setValue(loaded_answer);
+                    //} else {
+                    curr_answer = loaded_answer;
+                    resetBackground();
+                    changeRadioBackground(curr_answer, typeOfQuestion);
+                } else {    // next at the first time
+                    curr_answer = -1;
+                    answer_group_bin.clearCheck();
+                    answer_group.clearCheck();
+                    resetBackground();
+                }
             }
         }
-    }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void setPrevQuestion() {
         scrollView.fullScroll(ScrollView.FOCUS_UP);
@@ -237,6 +234,7 @@ public class QuestionsActivity extends AppCompatActivity {
             question_body.setText(questions.get(curr_question).text);
         }
     }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void firstQuestion() {
@@ -269,6 +267,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void lastQuestion() {
