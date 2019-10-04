@@ -133,20 +133,25 @@ public class QuestionsActivity extends AppCompatActivity {
             answers.add(new Answer(id, type, -1));
         }
 
-        // Listener to Quantity layout(Number Picker) it's anonymous
-        numberPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
-            @Override
-            public void onScrollStateChange(NumberPicker numberPicker, int i) {
-                curr_answer = i;
-
-            }
-        });
-
         qualityRadiosChanger qualityRadiosChanger = new qualityRadiosChanger();
-        answer_group.setOnCheckedChangeListener(qualityRadiosChanger);
-
         binaryRadiosChanger binaryRadiosChanger = new binaryRadiosChanger();
-        answer_group.setOnCheckedChangeListener(binaryRadiosChanger);
+
+        if (questions.get(curr_question).type == 0) {
+            numberPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
+                @Override
+                public void onScrollStateChange(NumberPicker numberPicker, int i) {
+                    curr_answer = i;
+
+                }
+            });
+        }
+        else if (questions.get(curr_question).type == 1)
+            answer_group.setOnCheckedChangeListener(qualityRadiosChanger);
+
+        else
+            answer_group.setOnCheckedChangeListener(binaryRadiosChanger);
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,7 +180,6 @@ public class QuestionsActivity extends AppCompatActivity {
                 }
             }
         });
-
 
     }
 
@@ -288,10 +292,14 @@ public class QuestionsActivity extends AppCompatActivity {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void setNextQuestion() {
-        curr_question++;
-        curr_quetion_display = curr_question + 1;
-        layoutSwitch();
-        question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+        if (curr_question == questions.size() - 1) // Last question
+            lastQuestion();
+        else {
+            curr_question++;
+            curr_quetion_display = curr_question + 1;
+            layoutSwitch();
+            question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
