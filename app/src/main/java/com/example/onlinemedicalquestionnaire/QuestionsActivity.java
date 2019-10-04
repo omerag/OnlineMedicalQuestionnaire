@@ -117,7 +117,7 @@ public class QuestionsActivity extends AppCompatActivity {
         questions = new ArrayList<>();
 
         for (int i = 0; i <= 6; i++) {
-            questions.add(new Question(i, i % 3, questionsTitle.get(i)));
+            questions.add(new Question(i, i%3, questionsTitle.get(i)));
         }
 
         // first question
@@ -136,7 +136,6 @@ public class QuestionsActivity extends AppCompatActivity {
         qualityRadiosChanger qualityRadiosChanger = new qualityRadiosChanger();
         binaryRadiosChanger binaryRadiosChanger = new binaryRadiosChanger();
 
-        if (questions.get(curr_question).type == 0) {
             numberPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
                 @Override
                 public void onScrollStateChange(NumberPicker numberPicker, int i) {
@@ -144,11 +143,8 @@ public class QuestionsActivity extends AppCompatActivity {
 
                 }
             });
-        }
-        else if (questions.get(curr_question).type == 1)
-            answer_group.setOnCheckedChangeListener(binaryRadiosChanger);
 
-        else
+            answer_group_bin.setOnCheckedChangeListener(binaryRadiosChanger);
             answer_group.setOnCheckedChangeListener(qualityRadiosChanger);
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,7 +216,6 @@ public class QuestionsActivity extends AppCompatActivity {
                 }
             }
         }
-
     }
 
     // Listener to Quality layout
@@ -239,7 +234,6 @@ public class QuestionsActivity extends AppCompatActivity {
         }
 
     }
-
     // Listener to Quantity layout(Number Picker) it's anonymous
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
