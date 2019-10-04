@@ -146,10 +146,10 @@ public class QuestionsActivity extends AppCompatActivity {
             });
         }
         else if (questions.get(curr_question).type == 1)
-            answer_group.setOnCheckedChangeListener(qualityRadiosChanger);
+            answer_group.setOnCheckedChangeListener(binaryRadiosChanger);
 
         else
-            answer_group.setOnCheckedChangeListener(binaryRadiosChanger);
+            answer_group.setOnCheckedChangeListener(qualityRadiosChanger);
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
