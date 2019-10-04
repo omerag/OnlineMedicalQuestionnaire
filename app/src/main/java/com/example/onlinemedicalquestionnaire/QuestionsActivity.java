@@ -134,7 +134,7 @@ public class QuestionsActivity extends AppCompatActivity {
         }
 
         qualityRadiosChanger qualityRadiosChanger = new qualityRadiosChanger();
-        binaryRadiosChanger binaryRadiosChanger = new binaryRadiosChanger();
+        final binaryRadiosChanger binaryRadiosChanger = new binaryRadiosChanger();
 
             numberPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
                 @Override
@@ -171,6 +171,9 @@ public class QuestionsActivity extends AppCompatActivity {
                         answers.get(curr_question).setResult(curr_answer);
                         setNextQuestion();
                         curr_answer = -1;
+                        answer_group_bin.clearCheck();
+                        answer_group.clearCheck();
+                        resetBackground();
 
                     }
                 }
