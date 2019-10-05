@@ -285,7 +285,6 @@ public class QuestionsActivity extends AppCompatActivity {
         dialog.setView(dialogView);
         dialog.setCanceledOnTouchOutside(false);
 
-
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -422,7 +421,6 @@ public class QuestionsActivity extends AppCompatActivity {
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     @Override
     public void onBackPressed() {

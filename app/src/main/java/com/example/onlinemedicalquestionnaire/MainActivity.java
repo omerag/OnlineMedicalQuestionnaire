@@ -79,17 +79,17 @@ public class MainActivity extends AppCompatActivity {
         AVF.setFlipInterval(2600);
         AVF.setAutoStart(true);
 
+
     }
 
-    public void getUser(){
+    public void getUser() {
 
-        sp = getSharedPreferences("sp",MODE_PRIVATE);
+        sp = getSharedPreferences("sp", MODE_PRIVATE);
 
-        if (sp.contains("name")){
-            patientName = sp.getString("name","");
+        if (sp.contains("name")) {
+            patientName = sp.getString("name", "");
             userNameTv.setText(userNameTv.getText() + " " + patientName);
-        }
-        else {
+        } else {
             // Login dialog:
             final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).create();
             final View dialogView = getLayoutInflater().inflate(R.layout.login_dialog, null);
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     //// if exist ......
-                    sp.edit().putString("name","שמעון").commit();
+                    sp.edit().putString("name", "שמעון").commit();
                     userNameTv.setText(userNameTv.getText() + " שמעון");
                     dialog.dismiss();
                 }
