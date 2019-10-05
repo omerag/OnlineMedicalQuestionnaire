@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private AdapterViewFlipper AVF;
     String patientName;
     TextView userNameTv;
+    SharedPreferences sp;
+    Button startBtn;
 
     int[] IMAGES = {
             R.drawable.picture1,
@@ -49,10 +52,6 @@ public class MainActivity extends AppCompatActivity {
             ""
     };
 
-
-    Button startBtn;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,11 +59,9 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
-        getUser();
-
         startBtn = findViewById(R.id.startBtn);
         userNameTv = findViewById(R.id.user_name_tv);
-
+        getUser();
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +81,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void getUser(){
 
+        sp = getSharedPreferences("sp",MODE_PRIVATE);
+
+        if (sp.contains("name")){
+            patientName = sp.getString("name","");
+            userNameTv.setText(userNameTv.getText() + " " + patientName);
+        }
+        else {
+            // Login dialog:
+            final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).create();
+            final View dialogView = getLayoutInflater().inflate(R.layout.login_dialog, null);
+            TextView login_tv = dialogView.findViewById(R.id.login_tv);
+            TextView phone_et = dialogView.findViewById(R.id.phone_et);
+            Button login_btn = dialogView.findViewById(R.id.login_btn);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setView(dialogView);
+            dialog.setCanceledOnTouchOutside(false);
+
+            login_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //// if exist ......
+                    sp.edit().putString("name","שמעון").commit();
+                    userNameTv.setText(userNameTv.getText() + " שמעון");
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+    }
 
     class CustomAdapter extends BaseAdapter {
         Context context;
@@ -124,37 +151,5 @@ public class MainActivity extends AppCompatActivity {
             image.setImageResource(images[position]);
             return view;
         }
-    }
-
-    void getUser(){
-
-        SharedPreferences sp = getSharedPreferences("sp",MODE_PRIVATE);
-        patientName = sp.getString("name","");
-        if (patientName.equals("")){
-
-            // Login dialog:
-            final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).create();
-            final View dialogView = getLayoutInflater().inflate(R.layout.login_dialog, null);
-            TextView login_tv = dialogView.findViewById(R.id.login_tv);
-            TextView phone_et = dialogView.findViewById(R.id.phone_et);
-            Button login_btn = dialogView.findViewById(R.id.login_btn);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setView(dialogView);
-            dialog.setCanceledOnTouchOutside(false);
-
-            login_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //// if exist ......
-
-                    finish();
-                }
-            });
-
-        }
-        else {
-            userNameTv.setText(userNameTv.getText() + " " + patientName);
-        }
-
     }
 }
