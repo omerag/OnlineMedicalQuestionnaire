@@ -112,7 +112,7 @@ public class QuestionsActivity extends AppCompatActivity {
         questions = new ArrayList<>();
 
         for (int i = 0; i <= 6; i++) {
-            questions.add(new Question(i, i%3, questionsTitle.get(i)));
+            questions.add(new Question(i, i % 3, questionsTitle.get(i)));
         }
 
         // first question
@@ -140,7 +140,7 @@ public class QuestionsActivity extends AppCompatActivity {
             }
         });
 
-           answer_group_bin.setOnCheckedChangeListener(binaryRadiosChanger);
+        answer_group_bin.setOnCheckedChangeListener(binaryRadiosChanger);
         answer_group.setOnCheckedChangeListener(qualityRadiosChanger);
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,7 +174,6 @@ public class QuestionsActivity extends AppCompatActivity {
                     } else {
                         answers.get(curr_question).setResult(curr_answer);
                         setNextQuestion();
-                        numberPicker.setValue(0);
                     }
                 } else { // Binary or Quality
                     if (curr_answer == -1) {
@@ -190,38 +189,6 @@ public class QuestionsActivity extends AppCompatActivity {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        void setNextQuestion() {
-            scrollView.fullScroll(ScrollView.FOCUS_UP);
-            if (curr_question == questions.size() - 1) // Last question
-                lastQuestion();
-            else {
-                curr_question++;
-                curr_quetion_display = curr_question + 1;
-                layoutSwitch();
-                question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
-                question_body.setText(questions.get(curr_question).text);
-
-                // Load answer
-                int typeOfQuestion = questions.get(curr_question).type;
-                int loaded_answer = answers.get(curr_question).getResult();
-                if (loaded_answer != -1) {  // next after back
-                    //if (typeOfQuestion == 0) { // Quantity: Number Picker
-                    //numberPicker.setValue(loaded_answer);
-                    //} else {
-                    curr_answer = loaded_answer;
-                    resetBackground();
-                    changeRadioBackground(curr_answer, typeOfQuestion);
-                } else {    // next at the first time
-                    answer_group_bin.clearCheck();
-                    answer_group.clearCheck();
-                    resetBackground();
-                    curr_answer = -1;
-                }
-            }
-        }
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     void setPrevQuestion() {
         scrollView.fullScroll(ScrollView.FOCUS_UP);
         if (curr_question == 0) // First question
@@ -232,6 +199,52 @@ public class QuestionsActivity extends AppCompatActivity {
             layoutSwitch();
             question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
             question_body.setText(questions.get(curr_question).text);
+
+            // Load answer:
+            int typeOfQuestion = questions.get(curr_question).type;
+            int loaded_answer = answers.get(curr_question).getResult();
+
+            if (typeOfQuestion == 0) { // Quantity: Number Picker
+                numberPicker.setValue(loaded_answer);
+            } else { // Binary or Quality
+                resetBackground();
+                changeRadioBackground(loaded_answer, typeOfQuestion);
+                curr_answer = loaded_answer;
+            }
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void setNextQuestion() {
+        scrollView.fullScroll(ScrollView.FOCUS_UP);
+        if (curr_question == questions.size() - 1) // Last question
+            lastQuestion();
+        else {
+            curr_question++;
+            curr_quetion_display = curr_question + 1;
+            layoutSwitch();
+            question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+            question_body.setText(questions.get(curr_question).text);
+
+            // Load answer
+            int typeOfQuestion = questions.get(curr_question).type;
+            int loaded_answer = answers.get(curr_question).getResult();
+            if (loaded_answer != -1) {  // next after back
+                if (typeOfQuestion == 0) { // Quantity: Number Picker
+                    numberPicker.setValue(loaded_answer);
+                } else {
+                    curr_answer = loaded_answer;
+                    resetBackground();
+                    changeRadioBackground(curr_answer, typeOfQuestion);
+                }
+            } else {    // next at the first time
+                answer_group_bin.clearCheck();
+                answer_group.clearCheck();
+                numberPicker.setValue(0);
+                resetBackground();
+                curr_answer = -1;
+            }
         }
     }
 
@@ -262,6 +275,18 @@ public class QuestionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+
+                // Load first answer:
+                int typeOfQuestion = questions.get(curr_question).type;
+                int loaded_answer = answers.get(curr_question).getResult();
+
+                if (typeOfQuestion == 0) { // Quantity: Number Picker
+                    numberPicker.setValue(loaded_answer);
+                } else {
+                    resetBackground();
+                    changeRadioBackground(loaded_answer, typeOfQuestion);
+                    curr_answer = loaded_answer;
+                }
             }
         });
 
@@ -295,16 +320,17 @@ public class QuestionsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 dialog.dismiss();
 
-                // Load last answer:
+                // Load first answer:
                 int typeOfQuestion = questions.get(curr_question).type;
                 int loaded_answer = answers.get(curr_question).getResult();
 
-                //if (typeOfQuestion == 0) { // Quantity: Number Picker
-                //numberPicker.setValue(loaded_answer);
-                //} else {
-                resetBackground();
-                changeRadioBackground(loaded_answer, typeOfQuestion);
-                curr_answer = loaded_answer;
+                if (typeOfQuestion == 0) { // Quantity: Number Picker
+                    numberPicker.setValue(loaded_answer);
+                } else {
+                    resetBackground();
+                    changeRadioBackground(loaded_answer, typeOfQuestion);
+                    curr_answer = loaded_answer;
+                }
             }
         });
 
@@ -414,36 +440,6 @@ public class QuestionsActivity extends AppCompatActivity {
 
         dialog.show();
     }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /*
-
-                    // Load  Ui
-                    layoutSwitch();
-
-                    //Put The text Body
-                    question_body.setText(questions.get(curr_question).text);
-
-                    // Load Answer
-                    int typeOfQuestion = questions.get(curr_question).type;
-                    int num = answers.get(curr_question).getResult();
-
-                    if (typeOfQuestion == 0) { // Number Picker It is. Quantity
-                        if (num != -1) {
-                            numberPicker.setValue(num); // Scrolling to the Choosen answer
-                        }
-                    } else {
-                        if (num != -1) {
-                            resetBackground();
-                            changeRadioBackground(num, typeOfQuestion);
-
-                        }
-                    }
-                }
-            }
-        }
-    }*/
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
