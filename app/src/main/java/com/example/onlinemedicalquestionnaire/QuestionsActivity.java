@@ -132,11 +132,10 @@ public class QuestionsActivity extends AppCompatActivity {
         qualityRadiosChanger qualityRadiosChanger = new qualityRadiosChanger();
         final binaryRadiosChanger binaryRadiosChanger = new binaryRadiosChanger();
 
-        numberPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
+        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onScrollStateChange(NumberPicker numberPicker, int i) {
-                curr_answer = i;
-
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                curr_answer = numberPicker.getValue();
             }
         });
 
@@ -160,6 +159,7 @@ public class QuestionsActivity extends AppCompatActivity {
                     if (curr_answer == -1) {
                         didntChoose();
                     } else {
+                        Log.d("curr_answer_val",curr_answer+"");
                         answers.get(curr_question).setResult(curr_answer);
                         setNextQuestion();
                 }
