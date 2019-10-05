@@ -112,7 +112,7 @@ public class QuestionsActivity extends AppCompatActivity {
         questions = new ArrayList<>();
 
         for (int i = 0; i <= 6; i++) {
-            questions.add(new Question(i, 1, questionsTitle.get(i)));
+            questions.add(new Question(i, i%3, questionsTitle.get(i)));
         }
 
         // first question
@@ -140,7 +140,7 @@ public class QuestionsActivity extends AppCompatActivity {
             }
         });
 
-        answer_group_bin.setOnCheckedChangeListener(binaryRadiosChanger);
+           answer_group_bin.setOnCheckedChangeListener(binaryRadiosChanger);
         answer_group.setOnCheckedChangeListener(qualityRadiosChanger);
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -212,10 +212,10 @@ public class QuestionsActivity extends AppCompatActivity {
                     resetBackground();
                     changeRadioBackground(curr_answer, typeOfQuestion);
                 } else {    // next at the first time
-                    curr_answer = -1;
                     answer_group_bin.clearCheck();
                     answer_group.clearCheck();
                     resetBackground();
+                    curr_answer = -1;
                 }
             }
         }
