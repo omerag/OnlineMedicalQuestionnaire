@@ -149,17 +149,6 @@ public class QuestionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setPrevQuestion();
-
-                int typeOfQuestion = questions.get(curr_question).type;
-                int loaded_answer = answers.get(curr_question).getResult();
-
-                if (typeOfQuestion == 0) { // Quantity: Number Picker
-                    numberPicker.setValue(loaded_answer);
-                } else {
-                    resetBackground();
-                    changeRadioBackground(loaded_answer, typeOfQuestion);
-                    curr_answer = loaded_answer;
-                }
             }
         });
 
