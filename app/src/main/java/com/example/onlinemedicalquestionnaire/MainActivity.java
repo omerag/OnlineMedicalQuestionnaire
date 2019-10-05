@@ -1,12 +1,15 @@
 package com.example.onlinemedicalquestionnaire;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,7 +131,25 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("sp",MODE_PRIVATE);
         patientName = sp.getString("name","");
         if (patientName.equals("")){
-            //User not connected - Open Dialog here:
+
+            // Login dialog:
+            final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).create();
+            final View dialogView = getLayoutInflater().inflate(R.layout.login_dialog, null);
+            TextView login_tv = dialogView.findViewById(R.id.login_tv);
+            TextView phone_et = dialogView.findViewById(R.id.phone_et);
+            Button login_btn = dialogView.findViewById(R.id.login_btn);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setView(dialogView);
+            dialog.setCanceledOnTouchOutside(false);
+
+            login_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //// if exist ......
+
+                    finish();
+                }
+            });
 
         }
         else {

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_shape"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/login_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="17dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="כניסה למערכת"
+        android:textColor="@color/colorRed"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginVertical="10dp"
+        android:gravity="center_horizontal"
+        android:layout_marginHorizontal="50dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/phone_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:hint="הכנס/י מספר פלאפון"
+            android:textColor="@color/line2Color"
+            android:inputType="number"
+            android:maxLength="10"
+            android:textSize="25sp"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/shape"
+            android:gravity="center"
+            android:paddingHorizontal="15dp"
+
+            android:text="סיום"
+            android:textColor="@color/line2Color"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>
