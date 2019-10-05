@@ -5,6 +5,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +23,8 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private AdapterViewFlipper AVF;
+    String patientName;
+    TextView userNameTv;
 
     int[] IMAGES = {
             R.drawable.picture1,
@@ -54,7 +57,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
+        getUser();
+
         startBtn = findViewById(R.id.startBtn);
+        userNameTv = findViewById(R.id.user_name_tv);
 
 
         startBtn.setOnClickListener(new View.OnClickListener() {
@@ -115,5 +121,19 @@ public class MainActivity extends AppCompatActivity {
             image.setImageResource(images[position]);
             return view;
         }
+    }
+
+    void getUser(){
+
+        SharedPreferences sp = getSharedPreferences("sp",MODE_PRIVATE);
+        patientName = sp.getString("name","");
+        if (patientName.equals("")){
+            //User not connected - Open Dialog here:
+
+        }
+        else {
+            userNameTv.setText(userNameTv.getText() + " " + patientName);
+        }
+
     }
 }

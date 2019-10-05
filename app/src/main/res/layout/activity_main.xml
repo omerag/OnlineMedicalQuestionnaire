@@ -75,13 +75,14 @@
 
 
     <TextView
+        android:id="@+id/user_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="17dp"
         android:gravity="center"
         android:paddingHorizontal="4dp"
-        android:text="שלום שמעון"
+        android:text="שלום"
         android:textColor="@color/colorRed"
         android:textSize="30sp"
         android:textStyle="bold" />
