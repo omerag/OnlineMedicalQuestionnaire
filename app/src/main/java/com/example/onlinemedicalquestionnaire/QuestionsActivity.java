@@ -168,20 +168,11 @@ public class QuestionsActivity extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (questions.get(curr_question).type == 0) { // Quantity: number picker
                     if (curr_answer == -1) {
                         didntChoose();
                     } else {
                         answers.get(curr_question).setResult(curr_answer);
                         setNextQuestion();
-                    }
-                } else { // Binary or Quality
-                    if (curr_answer == -1) {
-                        didntChoose();
-                    } else {
-                        answers.get(curr_question).setResult(curr_answer);
-                        setNextQuestion();
-                    }
                 }
             }
         });
