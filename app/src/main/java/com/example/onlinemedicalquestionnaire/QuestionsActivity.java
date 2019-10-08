@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -52,7 +53,7 @@ public class QuestionsActivity extends AppCompatActivity {
     TextView question_body;
 
     String phone_number;
-    String URL = "http://212.179.205.15/shiba/patient/0508881919";
+    String URL = "http://212.179.205.15/shiba/patient/";//0508881919
 
     RadioGroup answer_group;        // Quality
     RadioGroup answer_group_bin;    // Binary
@@ -71,6 +72,8 @@ public class QuestionsActivity extends AppCompatActivity {
     LinearLayout binary_layout;
     LinearLayout quantity_layout;
 
+    SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +81,8 @@ public class QuestionsActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.questions_activity);
 
-        phone_number = getIntent().getStringExtra("phone_number");
+        sp = getSharedPreferences("sp", MODE_PRIVATE);
+        phone_number = sp.getString("phone_number","");
         questions = new ArrayList<>();
         answers = new ArrayList<>();
         load_questions(phone_number);
@@ -179,7 +183,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
         questions.clear();
         RequestQueue queue = Volley.newRequestQueue(QuestionsActivity.this);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL + phone_number, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -189,9 +193,17 @@ public class QuestionsActivity extends AppCompatActivity {
                     {
                         JSONObject jsonObject = arr.getJSONObject(i);
                         String id = jsonObject.getString("_id");
-                        int type = jsonObject.getInt("questionType");
                         String question_txt = jsonObject.getString("text");
-                        questions.add(new Question(id, type, question_txt));
+                        int type = jsonObject.getInt("questionType");
+                        if (type == 0)
+                        {
+                            int min = jsonObject.getInt("min");
+                            int max = jsonObject.getInt("max");
+                            questions.add(new Question(type, min, max, question_txt, id));
+                        }
+                        else {
+                            questions.add(new Question(id, type, question_txt));
+                        }
                     }
 
                     question_body.setText(questions.get(curr_question).text);
@@ -396,7 +408,7 @@ public class QuestionsActivity extends AppCompatActivity {
         objectJson.put("arr", arr);
 
         RequestQueue queue = Volley.newRequestQueue(QuestionsActivity.this);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL, objectJson, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL + phone_number, objectJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 

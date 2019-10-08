@@ -22,6 +22,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sp;
     Button startBtn;
     String phone_number;
+    String URL = "http://212.179.205.15/shiba/name/";//0508881919
 
     int[] IMAGES = {
             R.drawable.picture1,
@@ -68,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, QuestionsActivity.class);
-                intent.putExtra("phone_number", phone_number);
                 startActivity(intent);
                 finish();
             }
@@ -90,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (sp.contains("name")) {
             patientName = sp.getString("name", "");
+            phone_number = sp.getString("phone_number","");
             userNameTv.setText(userNameTv.getText() + " " + patientName);
         } else {
             // Login dialog:
@@ -106,9 +113,24 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     //// if exist ......
-                    sp.edit().putString("name", "שמעון").commit();
-                    userNameTv.setText(userNameTv.getText() + " שמעון");
                     phone_number = phone_et.getText().toString();
+                    RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                    StringRequest request = new StringRequest(URL + phone_number, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            userNameTv.setText(response);
+                            sp.edit().putString("name",response).commit();
+                            sp.edit().putString("phone_number", phone_number).commit();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+
+                    queue.add(request);
+                    queue.start();
                     dialog.dismiss();
                 }
             });
