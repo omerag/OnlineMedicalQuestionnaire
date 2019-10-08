@@ -2,20 +2,21 @@ package com.example.onlinemedicalquestionnaire;
 
 public class Answer {
 
-    int id,type,result;
+    int type,result;
+    String id;
 
-    public Answer(int id, int type, int res) {
+    public Answer(String id, int type, int res) {
         this.id = id;
         this.type = type;
         result = res;
 
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

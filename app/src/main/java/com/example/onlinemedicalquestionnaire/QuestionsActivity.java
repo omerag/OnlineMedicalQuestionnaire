@@ -52,7 +52,7 @@ public class QuestionsActivity extends AppCompatActivity {
     TextView question_body;
 
     String phone_number;
-    String URL = "http://212.179.205.15/shiba/patient/0508881919"; //0507778282
+    String URL = "http://212.179.205.15/shiba/patient/0508881919";
 
     RadioGroup answer_group;        // Quality
     RadioGroup answer_group_bin;    // Binary
@@ -80,6 +80,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
         phone_number = getIntent().getStringExtra("phone_number");
         questions = new ArrayList<>();
+        answers = new ArrayList<>();
         load_questions(phone_number);
 
         quality_layout = findViewById(R.id.quality_layout);
@@ -140,26 +141,21 @@ public class QuestionsActivity extends AppCompatActivity {
             questions.add(new Question(i, i % 3, questionsTitle.get(i)));
         }*/
 
-        if (questions.size() == 0)
-        {
-            Toast.makeText(this, "Empty Array", Toast.LENGTH_LONG).show();
-        }
-        else{
+
             // first question
-            question_body.setText(questions.get(curr_question).text);
+            /*question_body.setText(questions.get(curr_question).text);
             size = questions.size();
             curr_quetion_display = curr_question + 1;
             question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
-            layoutSwitch();
-        }
+            layoutSwitch();*/
 
 
-        answers = new ArrayList<>();
-        for (int i = 0; i < questions.size(); i++) {
-            int id = questions.get(i).id;
+
+        /*for (int i = 0; i < questions.size(); i++) {
+            String id = questions.get(i).id;
             int type = questions.get(i).type;
             answers.add(new Answer(id, type, -1));
-        }
+        }*/
 
         qualityRadiosChanger qualityRadiosChanger = new qualityRadiosChanger();
         final binaryRadiosChanger binaryRadiosChanger = new binaryRadiosChanger();
@@ -222,29 +218,40 @@ public class QuestionsActivity extends AppCompatActivity {
                     for (int i = 0; i < arr.length(); i++)
                     {
                         JSONObject jsonObject = arr.getJSONObject(i);
-                        int id = jsonObject.getInt("_id");
+                        String id = jsonObject.getString("_id");
                         int type = jsonObject.getInt("questionType");
                         String question_txt = jsonObject.getString("text");
                         questions.add(new Question(id, type, question_txt));
                     }
 
-                    Toast.makeText(QuestionsActivity.this, "GET SUCCESS", Toast.LENGTH_LONG).show();
+                    question_body.setText(questions.get(curr_question).text);
+                    size = questions.size();
+                    curr_quetion_display = curr_question + 1;
+                    question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+                    layoutSwitch();
+                    answers_initialization();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.d("JSONError",error.getMessage());
                 Toast.makeText(QuestionsActivity.this, "GET ERROR", Toast.LENGTH_LONG).show();
             }
         });
 
         queue.add(jsonObjectRequest);
         queue.start();
+    }
+
+    private void answers_initialization() {
+        for (int i = 0; i < questions.size(); i++) {
+            String id = questions.get(i).id;
+            int type = questions.get(i).type;
+            answers.add(new Answer(id, type, -1));
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
