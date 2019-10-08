@@ -21,6 +21,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,8 +35,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 public class QuestionsActivity extends AppCompatActivity {
@@ -75,7 +80,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
         phone_number = getIntent().getStringExtra("phone_number");
         questions = new ArrayList<>();
-        //load_questions(phone_number);
+        load_questions(phone_number);
 
         quality_layout = findViewById(R.id.quality_layout);
         binary_layout = findViewById(R.id.binary_layout);
@@ -116,14 +121,14 @@ public class QuestionsActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.nextBtn);
         scrollView = findViewById(R.id.scrollView);
 
-        final ArrayList<String> questionsTitle = new ArrayList<>();
+        /*final ArrayList<String> questionsTitle = new ArrayList<>();
         questionsTitle.add("כמה פעמים במהלך היום הרגשת שנשאר לך שתן לאחר השתנה?");
         questionsTitle.add("כמה פעמים במהלך היום היית צריכ/ה להשתין כל שעתיים או פחות?");
         questionsTitle.add("כמה פעמים במהלך היום חשת בהפסקות במהלך ההשתנה?");
         questionsTitle.add("כמה פעמים במהלך היום היה לך קשה להתאפק?");
         questionsTitle.add("כמה פעמים במהלך היום שמת לב לזרימת שתן חלשה?");
         questionsTitle.add("כמה פעמים במהלך היום היה לך צורך ללחוץ או להתאמץ כדי להתחיל להשתין?");
-        questionsTitle.add("כמה פעמים בלילה האחרון קמת כדי להשתין?");
+        questionsTitle.add("כמה פעמים בלילה האחרון קמת כדי להשתין?");*/
 
 
         numberPicker.setMaxValue(10);
@@ -131,16 +136,23 @@ public class QuestionsActivity extends AppCompatActivity {
 
 
 
-        for (int i = 0; i <= 6; i++) {
+        /*for (int i = 0; i <= 6; i++) {
             questions.add(new Question(i, i % 3, questionsTitle.get(i)));
+        }*/
+
+        if (questions.size() == 0)
+        {
+            Toast.makeText(this, "Empty Array", Toast.LENGTH_LONG).show();
+        }
+        else{
+            // first question
+            question_body.setText(questions.get(curr_question).text);
+            size = questions.size();
+            curr_quetion_display = curr_question + 1;
+            question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+            layoutSwitch();
         }
 
-        // first question
-        question_body.setText(questions.get(curr_question).text);
-        size = questions.size();
-        curr_quetion_display = curr_question + 1;
-        question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
-        layoutSwitch();
 
         answers = new ArrayList<>();
         for (int i = 0; i < questions.size(); i++) {
@@ -226,6 +238,7 @@ public class QuestionsActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                Log.d("JSONError",error.getMessage());
                 Toast.makeText(QuestionsActivity.this, "GET ERROR", Toast.LENGTH_LONG).show();
             }
         });
@@ -390,7 +403,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
     private void send_answers(ArrayList<Answer> answers) throws JSONException {
 
-        JSONObject objectJson = new JSONObject();
+        final JSONObject objectJson = new JSONObject();
         JSONArray arr = new JSONArray();
 
         for (int i = 0 ; i < answers.size(); i++)
