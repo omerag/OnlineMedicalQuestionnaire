@@ -254,6 +254,8 @@ public class QuestionsActivity extends AppCompatActivity {
             int loaded_answer = answers.get(curr_question).getResult();
 
             if (typeOfQuestion == 0) { // Quantity: Number Picker
+                numberPicker.setMinValue(questions.get(curr_question).getMin());
+                numberPicker.setMaxValue(questions.get(curr_question).getMax());
                 numberPicker.setValue(loaded_answer);
             } else { // Binary or Quality
                 resetBackground();
@@ -281,6 +283,8 @@ public class QuestionsActivity extends AppCompatActivity {
             int loaded_answer = answers.get(curr_question).getResult();
             if (loaded_answer != -1) {  // next after back
                 if (typeOfQuestion == 0) { // Quantity: Number Picker
+                    numberPicker.setMinValue(questions.get(curr_question).getMin());
+                    numberPicker.setMaxValue(questions.get(curr_question).getMax());
                     numberPicker.setValue(loaded_answer);
                 } else {
                     curr_answer = loaded_answer;
@@ -330,6 +334,8 @@ public class QuestionsActivity extends AppCompatActivity {
                 int loaded_answer = answers.get(curr_question).getResult();
 
                 if (typeOfQuestion == 0) { // Quantity: Number Picker
+                    numberPicker.setMinValue(questions.get(curr_question).getMin());
+                    numberPicker.setMaxValue(questions.get(curr_question).getMax());
                     numberPicker.setValue(loaded_answer);
                 } else {
                     resetBackground();
@@ -378,6 +384,8 @@ public class QuestionsActivity extends AppCompatActivity {
                 int loaded_answer = answers.get(curr_question).getResult();
 
                 if (typeOfQuestion == 0) { // Quantity: Number Picker
+                    numberPicker.setMinValue(questions.get(curr_question).getMin());
+                    numberPicker.setMaxValue(questions.get(curr_question).getMax());
                     numberPicker.setValue(loaded_answer);
                 } else {
                     resetBackground();
@@ -435,6 +443,8 @@ public class QuestionsActivity extends AppCompatActivity {
             quantity_layout.setVisibility(View.VISIBLE);
             binary_layout.setVisibility(View.GONE);
             quality_layout.setVisibility(View.GONE);
+            numberPicker.setMinValue(questions.get(curr_question).getMin());
+            numberPicker.setMaxValue(questions.get(curr_question).getMax());
 
         } else if (questions.get(curr_question).type == 1) {// Binary
             binary_layout.setVisibility(View.VISIBLE);
