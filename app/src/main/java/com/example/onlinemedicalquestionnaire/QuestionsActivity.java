@@ -122,40 +122,10 @@ public class QuestionsActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.nextBtn);
         scrollView = findViewById(R.id.scrollView);
 
-        /*final ArrayList<String> questionsTitle = new ArrayList<>();
-        questionsTitle.add("כמה פעמים במהלך היום הרגשת שנשאר לך שתן לאחר השתנה?");
-        questionsTitle.add("כמה פעמים במהלך היום היית צריכ/ה להשתין כל שעתיים או פחות?");
-        questionsTitle.add("כמה פעמים במהלך היום חשת בהפסקות במהלך ההשתנה?");
-        questionsTitle.add("כמה פעמים במהלך היום היה לך קשה להתאפק?");
-        questionsTitle.add("כמה פעמים במהלך היום שמת לב לזרימת שתן חלשה?");
-        questionsTitle.add("כמה פעמים במהלך היום היה לך צורך ללחוץ או להתאמץ כדי להתחיל להשתין?");
-        questionsTitle.add("כמה פעמים בלילה האחרון קמת כדי להשתין?");*/
-
 
         numberPicker.setMaxValue(10);
         numberPicker.setMinValue(0);
 
-
-
-        /*for (int i = 0; i <= 6; i++) {
-            questions.add(new Question(i, i % 3, questionsTitle.get(i)));
-        }*/
-
-
-            // first question
-            /*question_body.setText(questions.get(curr_question).text);
-            size = questions.size();
-            curr_quetion_display = curr_question + 1;
-            question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
-            layoutSwitch();*/
-
-
-
-        /*for (int i = 0; i < questions.size(); i++) {
-            String id = questions.get(i).id;
-            int type = questions.get(i).type;
-            answers.add(new Answer(id, type, -1));
-        }*/
 
         qualityRadiosChanger qualityRadiosChanger = new qualityRadiosChanger();
         final binaryRadiosChanger binaryRadiosChanger = new binaryRadiosChanger();
