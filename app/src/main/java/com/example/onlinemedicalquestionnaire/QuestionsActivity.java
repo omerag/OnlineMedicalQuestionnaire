@@ -19,6 +19,19 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -32,6 +45,9 @@ public class QuestionsActivity extends AppCompatActivity {
     int curr_answer = -1;
     TextView question_title;
     TextView question_body;
+
+    String phone_number;
+    final String URL = "http://212.179.205.15/shiba/patient/0508881919"; //0507778282
 
     RadioGroup answer_group;        // Quality
     RadioGroup answer_group_bin;    // Binary
@@ -56,6 +72,10 @@ public class QuestionsActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
         setContentView(R.layout.questions_activity);
+
+        phone_number = getIntent().getStringExtra("phone_number");
+        questions = new ArrayList<>();
+        //load_questions(phone_number);
 
         quality_layout = findViewById(R.id.quality_layout);
         binary_layout = findViewById(R.id.binary_layout);
@@ -109,7 +129,7 @@ public class QuestionsActivity extends AppCompatActivity {
         numberPicker.setMaxValue(10);
         numberPicker.setMinValue(0);
 
-        questions = new ArrayList<>();
+
 
         for (int i = 0; i <= 6; i++) {
             questions.add(new Question(i, i % 3, questionsTitle.get(i)));
@@ -147,7 +167,16 @@ public class QuestionsActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setPrevQuestion();
+                if (curr_answer != -1)
+                {
+                    answers.get(curr_question).setResult(curr_answer);
+                    answers.get(curr_question).setId(questions.get(curr_question).getId());
+                    answers.get(curr_question).setType(questions.get(curr_question).getType());
+                    setPrevQuestion();
+                }
+                else {
+                    setPrevQuestion();
+                }
             }
         });
 
@@ -159,12 +188,50 @@ public class QuestionsActivity extends AppCompatActivity {
                     if (curr_answer == -1) {
                         didntChoose();
                     } else {
-                        Log.d("curr_answer_val",curr_answer+"");
                         answers.get(curr_question).setResult(curr_answer);
+                        answers.get(curr_question).setId(questions.get(curr_question).getId());
+                        answers.get(curr_question).setType(questions.get(curr_question).getType());
                         setNextQuestion();
                 }
             }
         });
+    }
+
+    private void load_questions(String phone_number) {
+
+        questions.clear();
+        RequestQueue queue = Volley.newRequestQueue(QuestionsActivity.this);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    JSONArray arr = response.getJSONArray("QuestionArray");
+                    for (int i = 0; i < arr.length(); i++)
+                    {
+                        JSONObject jsonObject = arr.getJSONObject(i);
+                        int id = jsonObject.getInt("_id");
+                        int type = jsonObject.getInt("questionType");
+                        String question_txt = jsonObject.getString("text");
+                        questions.add(new Question(id, type, question_txt));
+                    }
+
+                    Toast.makeText(QuestionsActivity.this, "GET SUCCESS", Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(QuestionsActivity.this, "GET ERROR", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+        queue.start();
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -288,6 +355,11 @@ public class QuestionsActivity extends AppCompatActivity {
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
+                    send_answers(answers);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 Intent intent = new Intent(QuestionsActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -314,6 +386,43 @@ public class QuestionsActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    private void send_answers(ArrayList<Answer> answers) throws JSONException {
+
+        JSONObject objectJson = new JSONObject();
+        JSONArray arr = new JSONArray();
+
+        for (int i = 0 ; i < answers.size(); i++)
+        {
+            JSONObject answer = new JSONObject();
+            answer.put("questionId", answers.get(i).getId());
+            answer.put("answer", answers.get(i).getResult());
+            answer.put("questionType", answers.get(i).getType());
+
+            arr.put(i, answer);
+        }
+
+        objectJson.put("arr", arr);
+
+        RequestQueue queue = Volley.newRequestQueue(QuestionsActivity.this);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL, objectJson, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Toast.makeText(QuestionsActivity.this, "POST success", Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(QuestionsActivity.this, "POST ERROR", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        queue.add(request);
+        //queue.start();
+
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

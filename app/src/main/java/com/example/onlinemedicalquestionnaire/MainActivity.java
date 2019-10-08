@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     TextView userNameTv;
     SharedPreferences sp;
     Button startBtn;
+    String phone_number;
 
     int[] IMAGES = {
             R.drawable.picture1,
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, QuestionsActivity.class);
+                intent.putExtra("phone_number", phone_number);
                 startActivity(intent);
                 finish();
             }
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).create();
             final View dialogView = getLayoutInflater().inflate(R.layout.login_dialog, null);
             TextView login_tv = dialogView.findViewById(R.id.login_tv);
-            TextView phone_et = dialogView.findViewById(R.id.phone_et);
+            final TextView phone_et = dialogView.findViewById(R.id.phone_et);
             Button login_btn = dialogView.findViewById(R.id.login_btn);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setView(dialogView);
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     //// if exist ......
                     sp.edit().putString("name", "שמעון").commit();
                     userNameTv.setText(userNameTv.getText() + " שמעון");
+                    phone_number = phone_et.getText().toString();
                     dialog.dismiss();
                 }
             });
