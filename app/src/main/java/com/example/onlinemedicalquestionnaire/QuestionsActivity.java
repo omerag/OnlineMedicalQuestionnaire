@@ -421,7 +421,7 @@ public class QuestionsActivity extends AppCompatActivity {
         });
 
         queue.add(request);
-        //queue.start();
+        queue.start();
 
     }
 
