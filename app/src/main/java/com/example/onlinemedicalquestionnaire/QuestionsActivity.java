@@ -47,7 +47,7 @@ public class QuestionsActivity extends AppCompatActivity {
     TextView question_body;
 
     String phone_number;
-    final String URL = "http://212.179.205.15/shiba/patient/0508881919"; //0507778282
+    String URL = "http://212.179.205.15/shiba/patient/0508881919"; //0507778282
 
     RadioGroup answer_group;        // Quality
     RadioGroup answer_group_bin;    // Binary
