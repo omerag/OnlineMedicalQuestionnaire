@@ -417,7 +417,6 @@ public class QuestionsActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL + phone_number, objectJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
                 Toast.makeText(QuestionsActivity.this, "POST success", Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
