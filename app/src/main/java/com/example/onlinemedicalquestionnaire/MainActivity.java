@@ -29,6 +29,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private AdapterViewFlipper AVF;
     String patientName;
     TextView userNameTv;
+    TextView dateTv;
     SharedPreferences sp;
     Button startBtn;
     String phone_number;
@@ -71,6 +74,14 @@ public class MainActivity extends AppCompatActivity {
         startBtn = findViewById(R.id.startBtn);
         userNameTv = findViewById(R.id.user_name_tv);
         getUser();
+
+        dateTv = findViewById(R.id.date_tv);
+        Date today = new Date();
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        dateTv.setText(day+"/"+month+"/"+year);
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -119,14 +119,14 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/date_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:paddingHorizontal="4dp"
-        android:text="10/10/2019"
+        android:text=""
         android:textColor="@color/line2Color"
         android:textSize="30sp"
         android:textStyle="bold" />
