@@ -112,7 +112,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="8dp"
-                        android:text=" לא"
+                        android:text=" כן"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -126,7 +126,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="8dp"
-                        android:text=" כן"
+                        android:text=" לא"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -147,7 +147,7 @@
                 android:textColor="@color/line2Color"
                 android:textSize="30sp"
                 android:visibility="gone"
-                android:textStyle="bold">
+                >
 
                 <RadioGroup
                     android:id="@+id/answer_group"
@@ -178,7 +178,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="8dp"
-                        android:text=" אחת לחמש פעמים"
+                        android:text=" פחות ממחצית המקרים"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -191,7 +191,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="8dp"
-                        android:text=" פחות ממחצית המקרים"
+                        android:text=" כמחצית המקרים"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -204,26 +204,13 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="8dp"
-                        android:text=" כמחצית המקרים"
-                        android:textColor="@color/line2Color"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <RadioButton
-                        android:id="@+id/answer4_radio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="7dp"
-                        android:background="@drawable/question_shape"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="8dp"
                         android:text=" יותר ממחצית המקרים"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <RadioButton
-                        android:id="@+id/answer5_radio"
+                        android:id="@+id/answer4_radio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"

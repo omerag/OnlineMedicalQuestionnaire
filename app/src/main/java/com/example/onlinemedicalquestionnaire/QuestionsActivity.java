@@ -105,14 +105,12 @@ public class QuestionsActivity extends AppCompatActivity {
         RadioButton answer2_radio = findViewById(R.id.answer2_radio);
         RadioButton answer3_radio = findViewById(R.id.answer3_radio);
         RadioButton answer4_radio = findViewById(R.id.answer4_radio);
-        RadioButton answer5_radio = findViewById(R.id.answer5_radio);
 
         radioButtons.add(answer0_radio);
         radioButtons.add(answer1_radio);
         radioButtons.add(answer2_radio);
         radioButtons.add(answer3_radio);
         radioButtons.add(answer4_radio);
-        radioButtons.add(answer5_radio);
 
         // Binary
         answer_group_bin = findViewById(R.id.answer_group_bin);
