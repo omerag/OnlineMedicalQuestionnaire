@@ -168,13 +168,13 @@ public class MainActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.d("get", error.getMessage());
+                            Log.d("get_error", error.getMessage());
                             Toast.makeText(MainActivity.this, "GET ERROR", Toast.LENGTH_SHORT).show();
                         }
                     });
 
                     queue.add(objectRequest);
-                    queue.start();
+                    //queue.start();
 
                     dialog.dismiss();
                 }
@@ -255,41 +255,12 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("get", error.getMessage());
+                Log.d("get_error", error.getMessage());
                 Toast.makeText(MainActivity.this, "GET ERROR", Toast.LENGTH_SHORT).show();
             }
         });
 
         queue.add(objectRequest);
-        queue.start();
+        //queue.start();
     }
 }
-
-
-
-   /* StringRequest request = new StringRequest(URL + phone_number, new Response.Listener<String>() {
-        @Override
-        public void onResponse(String response) {
-            if (response.equals("Not Found")){
-                Toast.makeText(MainActivity.this, "Not Found", Toast.LENGTH_LONG).show();
-                getUser();
-            }
-            else {
-                userNameTv.setText(response);
-                sp.edit().putString("name",response).commit();
-                sp.edit().putString("phone_number", phone_number).commit();
-            }
-
-        }
-    }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.d("get", error.getMessage());
-            Toast.makeText(MainActivity.this, "GET ERROR", Toast.LENGTH_SHORT).show();
-
-        }
-    });
-
-                    queue.add(request);
-                            queue.start();
-*/
