@@ -120,7 +120,17 @@ public class MainActivity extends AppCompatActivity {
             patientName = sp.getString("name", "");
             phone_number = sp.getString("phone_number","");
             userNameTv.setText(userNameTv.getText() + " " + patientName);
-            check_Hours();
+            if (!isAnswered())
+            {
+                startBtn.setEnabled(false);
+                startBtn.setText("בוצע");
+                Toast.makeText(MainActivity.this, "מילאת את השאלון לתאריך זה", Toast.LENGTH_LONG).show();
+            }
+            else {
+                startBtn.setEnabled(true);
+                startBtn.setText("תחילת שאלון");
+                check_Hours();
+            }
 
         } else {
             // Login dialog:
@@ -231,19 +241,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    isAnswer = response.getBoolean("");
                     start_hour = response.getInt("startHour");
                     end_hour = response.getInt("endHour");
-
-                    if (isAnswer){
-                        startBtn.setEnabled(false);
-                        startBtn.setText("בוצע");
-                        Toast.makeText(MainActivity.this, "מילאת את השאלון לתאריך זה", Toast.LENGTH_LONG).show();
-                        return;
-                    }else {
-                        startBtn.setText("תחילת שאלון");
-                        startBtn.setEnabled(true);
-                    }
 
                     Calendar calendar = Calendar.getInstance();
                     SimpleDateFormat mdformat = new SimpleDateFormat("HH");
@@ -275,4 +274,25 @@ public class MainActivity extends AppCompatActivity {
         queue.add(objectRequest);
         //queue.start();
     }
+
+    /*private boolean isAnswered()
+    {
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+
+        StringRequest request = new StringRequest(URL + phone_number, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("false"))
+                {
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+    }*/
 }
