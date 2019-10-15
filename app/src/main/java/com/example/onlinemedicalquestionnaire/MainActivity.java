@@ -23,12 +23,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -43,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     Button startBtn;
     String phone_number;
     String URL = "http://212.179.205.15/shiba/name/";//0508881919
+    int start_hour, end_hour, curr_time;
 
     int[] IMAGES = {
             R.drawable.picture1,
@@ -72,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         startBtn = findViewById(R.id.startBtn);
+        startBtn.setEnabled(false);
         userNameTv = findViewById(R.id.user_name_tv);
         getUser();
 
@@ -110,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
             patientName = sp.getString("name", "");
             phone_number = sp.getString("phone_number","");
             userNameTv.setText(userNameTv.getText() + " " + patientName);
+            check_Hours();
+
         } else {
             // Login dialog:
             final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).create();
@@ -126,23 +137,45 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     //// if exist ......
                     phone_number = phone_et.getText().toString();
+                    if (phone_number.equals(""))
+                    {
+                        Toast.makeText(MainActivity.this, "Enter number", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                    StringRequest request = new StringRequest(URL + phone_number, new Response.Listener<String>() {
+                    JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL + phone_number, null, new Response.Listener<JSONObject>() {
                         @Override
-                        public void onResponse(String response) {
-                            userNameTv.setText(response);
-                            sp.edit().putString("name",response).commit();
-                            sp.edit().putString("phone_number", phone_number).commit();
+                        public void onResponse(JSONObject response) {
+                            try {
+                                String name = response.getString("name");
+                                if (name.equals("Not Found")) {
+                                    getUser();
+                                    Toast.makeText(MainActivity.this, "Not Found", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    userNameTv.setText(name);
+                                    sp.edit().putString("name",name).commit();
+                                    sp.edit().putString("phone_number", phone_number).commit();
+                                    check_Hours();
+                                }
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
+                            Log.d("get", error.getMessage());
+                            Toast.makeText(MainActivity.this, "GET ERROR", Toast.LENGTH_SHORT).show();
                         }
                     });
 
-                    queue.add(request);
+                    queue.add(objectRequest);
                     queue.start();
+
                     dialog.dismiss();
                 }
             });
@@ -189,4 +222,74 @@ public class MainActivity extends AppCompatActivity {
             return view;
         }
     }
+
+    private void check_Hours(){
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL + phone_number, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    start_hour = response.getInt("startHour");
+                    end_hour = response.getInt("endHour");
+
+                    Calendar calendar = Calendar.getInstance();
+                    SimpleDateFormat mdformat = new SimpleDateFormat("HH");
+                    String strDate = mdformat.format(calendar.getTime());
+
+                    curr_time = Integer.parseInt(strDate);
+
+                    if (curr_time >= start_hour && curr_time <= end_hour)
+                    {
+                        startBtn.setEnabled(true);
+                    }
+                    else {
+                        startBtn.setEnabled(false);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("get", error.getMessage());
+                Toast.makeText(MainActivity.this, "GET ERROR", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(objectRequest);
+        queue.start();
+    }
 }
+
+
+
+   /* StringRequest request = new StringRequest(URL + phone_number, new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            if (response.equals("Not Found")){
+                Toast.makeText(MainActivity.this, "Not Found", Toast.LENGTH_LONG).show();
+                getUser();
+            }
+            else {
+                userNameTv.setText(response);
+                sp.edit().putString("name",response).commit();
+                sp.edit().putString("phone_number", phone_number).commit();
+            }
+
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.d("get", error.getMessage());
+            Toast.makeText(MainActivity.this, "GET ERROR", Toast.LENGTH_SHORT).show();
+
+        }
+    });
+
+                    queue.add(request);
+                            queue.start();
+*/
