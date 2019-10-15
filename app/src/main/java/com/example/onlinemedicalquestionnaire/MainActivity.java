@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     String phone_number;
     String URL = "http://212.179.205.15/shiba/name/";//0508881919
     int start_hour, end_hour, curr_time;
+    boolean isAnswer;
 
     int[] IMAGES = {
             R.drawable.picture1,
@@ -230,8 +231,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    isAnswer = response.getBoolean("");
                     start_hour = response.getInt("startHour");
                     end_hour = response.getInt("endHour");
+
+                    if (isAnswer){
+                        startBtn.setEnabled(false);
+                        startBtn.setText("בוצע");
+                        Toast.makeText(MainActivity.this, "מילאת את השאלון לתאריך זה", Toast.LENGTH_LONG).show();
+                        return;
+                    }else {
+                        startBtn.setText("תחילת שאלון");
+                        startBtn.setEnabled(true);
+                    }
 
                     Calendar calendar = Calendar.getInstance();
                     SimpleDateFormat mdformat = new SimpleDateFormat("HH");
