@@ -217,7 +217,7 @@ public class QuestionsActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.d("GETERROR", error.toString());
                 Toast.makeText(QuestionsActivity.this, "GET ERROR", Toast.LENGTH_LONG).show();
             }
         });

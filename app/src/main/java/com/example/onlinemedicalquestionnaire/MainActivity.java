@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     String phone_number;
     String URL = "http://212.179.205.15/shiba/name/";//0508881919
     int start_hour, end_hour, curr_time;
-    boolean isAnswer;
+    boolean isAnswer = false;
 
     int[] IMAGES = {
             R.drawable.picture1,
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             patientName = sp.getString("name", "");
             phone_number = sp.getString("phone_number","");
             userNameTv.setText(userNameTv.getText() + " " + patientName);
-            if (!isAnswered())
+            if (isAnswered())
             {
                 startBtn.setEnabled(false);
                 startBtn.setText("בוצע");
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             login_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //// if exist ......
+
                     phone_number = phone_et.getText().toString();
                     if (phone_number.equals(""))
                     {
@@ -154,39 +154,37 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                    JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL + phone_number, null, new Response.Listener<JSONObject>() {
+                    StringRequest stringRequest = new StringRequest(URL + phone_number, new Response.Listener<String>() {
                         @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                String name = response.getString("name");
-                                if (name.equals("Not Found")) {
-                                    getUser();
-                                    Toast.makeText(MainActivity.this, "Not Found", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
+                        public void onResponse(String response) {
+                            if (response.equals("Not Found"))
+                            {
+                                getUser();
+                                Toast.makeText(MainActivity.this, "User Not Found", Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                try {
+                                    JSONObject rootObject = new JSONObject(response);
+                                    String name = rootObject.getString("name");
                                     userNameTv.setText(name);
                                     sp.edit().putString("name",name).commit();
                                     sp.edit().putString("phone_number", phone_number).commit();
                                     check_Hours();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
 
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
 
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.d("get_error", error.getMessage());
-                            Toast.makeText(MainActivity.this, "GET ERROR", Toast.LENGTH_SHORT).show();
+
                         }
                     });
 
-                    queue.add(objectRequest);
-                    //queue.start();
-
+                    queue.add(stringRequest);
                     dialog.dismiss();
                 }
             });
@@ -272,10 +270,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         queue.add(objectRequest);
-        //queue.start();
     }
 
-    /*private boolean isAnswered()
+    private boolean isAnswered()
     {
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
 
@@ -284,7 +281,10 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 if (response.equals("false"))
                 {
-
+                    isAnswer = true;
+                }
+                else {
+                    isAnswer = false;
                 }
 
             }
@@ -294,5 +294,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }*/
+        return isAnswer;
+    }
 }
