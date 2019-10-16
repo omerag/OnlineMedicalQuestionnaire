@@ -42,6 +42,7 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationCompat.Builder getChannelNotification() {
         Intent intent = new Intent(getBaseContext(),MainActivity.class);
+        intent.putExtra("from_notif",true);
         PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(),2,intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
