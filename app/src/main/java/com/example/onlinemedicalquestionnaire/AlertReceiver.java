@@ -14,6 +14,7 @@ public class AlertReceiver extends BroadcastReceiver {
         NotificationHelper notificationHelper = new NotificationHelper(context);
         NotificationCompat.Builder notificationBuilder = notificationHelper.getChannelNotification();
         notificationBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
+        notificationBuilder.setAutoCancel(true);
         notificationHelper.getManager().notify(1, notificationBuilder.build());
     }
 }

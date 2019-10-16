@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         AVF.setFlipInterval(2600);
         AVF.setAutoStart(true);
 
-        start_hour = 12;
+        start_hour = 13;
         onTimeSet(start_hour);
 
     }
@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, 57);
+        calendar.set(Calendar.MINUTE, 14);
         calendar.set(Calendar.SECOND, 0);
 
         starAlarm(calendar);

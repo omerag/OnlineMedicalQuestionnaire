@@ -4,8 +4,10 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
@@ -39,10 +41,15 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationCompat.Builder getChannelNotification() {
+        Intent intent = new Intent(getBaseContext(),MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(),2,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
                 .setContentTitle("שאלון רפואי אונליין")
                 .setContentText("שאלון רפואי זמין , לחץ כאן כדי להתחיל")
                 .setSmallIcon(android.R.drawable.star_on)
-                .setPriority(Notification.PRIORITY_MAX);
+                .setPriority(Notification.PRIORITY_MAX)
+                .setContentIntent(pendingIntent);
+
     }
 }
