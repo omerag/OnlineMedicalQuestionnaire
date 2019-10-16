@@ -2,14 +2,21 @@ package com.example.onlinemedicalquestionnaire;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     String URL = "http://212.179.205.15/shiba/name/";//0508881919
     int start_hour, end_hour, curr_time;
     boolean isAnswer = false;
+    NotificationManager manager;
+    final int NOTIF_ID = 1;
 
     int[] IMAGES = {
             R.drawable.picture1,
@@ -84,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         startBtn.setEnabled(false);
         userNameTv = findViewById(R.id.user_name_tv);
         getUser();
+        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         dateTv = findViewById(R.id.date_tv);
         Date today = new Date();
@@ -109,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
         AVF.setFlipInterval(2600);
         AVF.setAutoStart(true);
 
+        start_hour = 12;
+        onTimeSet(start_hour);
 
     }
 
@@ -119,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         if (sp.contains("name")) {
             patientName = sp.getString("name", "");
             phone_number = sp.getString("phone_number","");
+            start_hour = sp.getInt("startHour",19);
             userNameTv.setText(userNameTv.getText() + " " + patientName);
             if (isAnswered())
             {
@@ -173,9 +186,7 @@ public class MainActivity extends AppCompatActivity {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-
                             }
-
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -241,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     start_hour = response.getInt("startHour");
                     end_hour = response.getInt("endHour");
+                    sp.edit().putInt("start_hour", start_hour).commit();
 
                     Calendar calendar = Calendar.getInstance();
                     SimpleDateFormat mdformat = new SimpleDateFormat("HH");
@@ -279,6 +291,7 @@ public class MainActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(URL + phone_number, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("myresponse", response);
                 if (response.equals("false"))
                 {
                     isAnswer = true;
@@ -295,5 +308,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return isAnswer;
+    }
+
+
+    public void onTimeSet(int hour)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, 57);
+        calendar.set(Calendar.SECOND, 0);
+
+        starAlarm(calendar);
+    }
+
+    private void starAlarm(Calendar calendar) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(MainActivity.this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,1, intent,PendingIntent.FLAG_CANCEL_CURRENT);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 }
