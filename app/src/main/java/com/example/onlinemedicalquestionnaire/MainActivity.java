@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         AVF.setAutoStart(true);
 
 
-        start_hour = 13;
+
         if (getIntent().getBooleanExtra("from_notif",false))
         {
             manager.cancelAll();
@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
         Calendar now = Calendar.getInstance();
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, 34);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
         if (now.after(calendar))
