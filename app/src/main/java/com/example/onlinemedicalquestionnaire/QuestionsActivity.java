@@ -218,7 +218,7 @@ public class QuestionsActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("GETERROR", error.toString());
-                Toast.makeText(QuestionsActivity.this, "GET ERROR", Toast.LENGTH_LONG).show();
+                Toast.makeText(QuestionsActivity.this, "שגיאה בשרת, אנא נסה מאוחר יותר", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -417,13 +417,13 @@ public class QuestionsActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL + phone_number, objectJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Toast.makeText(QuestionsActivity.this, "POST success", Toast.LENGTH_LONG).show();
+                Toast.makeText(QuestionsActivity.this, "השליחה בוצעה בהצלחה", Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(QuestionsActivity.this, "POST ERROR", Toast.LENGTH_LONG).show();
+                Toast.makeText(QuestionsActivity.this, "שגיאה בשרת, אנא נסה מאוחר יותר", Toast.LENGTH_LONG).show();
             }
         });
 

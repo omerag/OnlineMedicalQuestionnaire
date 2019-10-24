@@ -47,7 +47,7 @@ public class NotificationHelper extends ContextWrapper {
 
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
                 .setContentTitle("שאלון רפואי אונליין")
-                .setContentText("שאלון רפואי זמין , לחץ כאן כדי להתחיל")
+                .setContentText("שאלון רפואי זמין, לחצ/י כאן כדי להתחיל")
                 .setSmallIcon(android.R.drawable.star_on)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentIntent(pendingIntent);
