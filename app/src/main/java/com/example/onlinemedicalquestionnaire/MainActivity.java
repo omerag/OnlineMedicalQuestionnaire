@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
             final View dialogView = getLayoutInflater().inflate(R.layout.login_dialog, null);
             TextView login_tv = dialogView.findViewById(R.id.login_tv);
             final TextView phone_et = dialogView.findViewById(R.id.phone_et);
+            final TextView notValid_tv = dialogView.findViewById(R.id.notValid_tv);
             Button login_btn = dialogView.findViewById(R.id.login_btn);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setView(dialogView);
@@ -162,7 +163,8 @@ public class MainActivity extends AppCompatActivity {
                     phone_number = phone_et.getText().toString();
                     if (phone_number.equals(""))
                     {
-                        Toast.makeText(MainActivity.this, "Enter number", Toast.LENGTH_LONG).show();
+                        notValid_tv.setText("*לא הוכנס מספר, נסה שנית");
+                        Toast.makeText(MainActivity.this, "לא הוכנס מספר, נסה שנית", Toast.LENGTH_LONG).show();
                         return;
                     }
                     RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
@@ -174,7 +176,8 @@ public class MainActivity extends AppCompatActivity {
                             if (response.equals("Not Found"))
                             {
                                 getUser();
-                                Toast.makeText(MainActivity.this, "User Not Found", Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this, "מספר לא קיים במערכת, נסה שנית", Toast.LENGTH_LONG).show();
+                                notValid_tv.setText("*מספר לא קיים במערכת, נסה שנית");
                             }
                             else {
                                 try {
