@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sp;
     Button startBtn;
     String phone_number;
-    String URL = "http://212.179.205.15/shiba/name/";
+    String URL = "http://212.179.205.15/shiba/name/";//0508881919
     int start_hour, end_hour, curr_time;
     boolean isAnswer = false;
     NotificationManager manager;
@@ -141,17 +141,8 @@ public class MainActivity extends AppCompatActivity {
             phone_number = sp.getString("phone_number","");
             start_hour = sp.getInt("startHour",19);
             userNameTv.setText(userNameTv.getText() + " " + patientName);
-            if (isAnswered())
-            {
-                startBtn.setEnabled(false);
-                startBtn.setText("בוצע");
-                Toast.makeText(MainActivity.this, "מילאת את השאלון לתאריך זה", Toast.LENGTH_LONG).show();
-            }
-            else {
-                startBtn.setEnabled(true);
-                startBtn.setText("תחילת שאלון");
-                check_Hours();
-            }
+
+            check_Hours();
 
         } else {
             // Login dialog:
@@ -159,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
             final View dialogView = getLayoutInflater().inflate(R.layout.login_dialog, null);
             TextView login_tv = dialogView.findViewById(R.id.login_tv);
             final TextView phone_et = dialogView.findViewById(R.id.phone_et);
-            final TextView notValid_tv = dialogView.findViewById(R.id.notValid_tv);
             Button login_btn = dialogView.findViewById(R.id.login_btn);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setView(dialogView);
@@ -172,19 +162,19 @@ public class MainActivity extends AppCompatActivity {
                     phone_number = phone_et.getText().toString();
                     if (phone_number.equals(""))
                     {
-                        notValid_tv.setText("*לא הוכנס מספר, נסה שנית");
-                        Toast.makeText(MainActivity.this, "לא הוכנס מספר, נסה שנית", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Enter number", Toast.LENGTH_LONG).show();
                         return;
                     }
                     RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
                     StringRequest stringRequest = new StringRequest(URL + phone_number, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+
+
                             if (response.equals("Not Found"))
                             {
                                 getUser();
-                                Toast.makeText(MainActivity.this, "מספר לא קיים במערכת, נסה שנית", Toast.LENGTH_LONG).show();
-                                notValid_tv.setText("*מספר לא קיים במערכת, נסה שנית");
+                                Toast.makeText(MainActivity.this, "User Not Found", Toast.LENGTH_LONG).show();
                             }
                             else {
                                 try {
@@ -257,59 +247,39 @@ public class MainActivity extends AppCompatActivity {
     private void check_Hours(){
 
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, URL + phone_number, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    start_hour = response.getInt("startHour");
-                    end_hour = response.getInt("endHour");
-                    sp.edit().putInt("start_hour", start_hour).commit();
-
-                    Calendar calendar = Calendar.getInstance();
-                    SimpleDateFormat mdformat = new SimpleDateFormat("HH");
-                    String strDate = mdformat.format(calendar.getTime());
-
-                    curr_time = Integer.parseInt(strDate);
-
-                    if (curr_time >= start_hour && curr_time <= end_hour)
-                    {
-                        startBtn.setEnabled(true);
-                    }
-                    else {
-                        startBtn.setEnabled(false);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("get_error", error.getMessage());
-                Toast.makeText(MainActivity.this, "שגיאה בשרת, אנא נסה מאוחר יותר", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        queue.add(objectRequest);
-    }
-
-    private boolean isAnswered()
-    {
-        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-
-        StringRequest request = new StringRequest(URL + phone_number, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(URL + phone_number, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("myresponse", response);
-                if (response.equals("false"))
-                {
-                    isAnswer = true;
+
+                if (response.equals("false")) {
+                    startBtn.setEnabled(false);
+                    startBtn.setText("בוצע");
+                    Toast.makeText(MainActivity.this, "מילאת את השאלון לתאריך זה", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    isAnswer = false;
+
+                    try {
+                        JSONObject rootObject = new JSONObject(response);
+                        start_hour = rootObject.getInt("startHour");
+                        end_hour = rootObject.getInt("endHour");
+                        sp.edit().putInt("start_hour", start_hour).commit();
+
+                        Calendar calendar = Calendar.getInstance();
+                        SimpleDateFormat mdformat = new SimpleDateFormat("HH");
+                        String strDate = mdformat.format(calendar.getTime());
+
+                        curr_time = Integer.parseInt(strDate);
+
+                        if (curr_time >= start_hour && curr_time <= end_hour) {
+                            startBtn.setEnabled(true);
+                        } else {
+                            startBtn.setEnabled(false);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+
 
             }
         }, new Response.ErrorListener() {
@@ -318,7 +288,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        return isAnswer;
+
+        queue.add(stringRequest);
+
     }
 
 
