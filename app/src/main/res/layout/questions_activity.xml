@@ -52,7 +52,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:gravity="center"
                 android:paddingHorizontal="10dp"
-                android:text="בחירת תשובה"
+                android:text="@string/please_select_an_answer"
                 android:textColor="@color/colorRed"
                 android:textSize="27sp"
                 android:textStyle="bold" />
@@ -249,7 +249,7 @@
                     android:background="@drawable/shape"
                     android:gravity="center"
                     android:paddingHorizontal="15dp"
-                    android:text="חזרה"
+                    android:text="@string/back"
                     android:textColor="@color/line2Color"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -263,7 +263,7 @@
                     android:background="@drawable/shape"
                     android:gravity="center"
                     android:paddingHorizontal="15dp"
-                    android:text="המשך"
+                    android:text="@string/_continue"
                     android:textColor="@color/line2Color"
                     android:textSize="25sp"
                     android:textStyle="bold" />

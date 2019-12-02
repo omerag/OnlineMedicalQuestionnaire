@@ -15,7 +15,7 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="בחרת לעזוב את השאלון"
+        android:text="@string/you_have_chosen_to_leave_the_questionnaire"
         android:textColor="@color/colorRed"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -30,7 +30,7 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="תשובותיך לא תישמרנה"
+        android:text="@string/your_answers_will_not_be_saved"
         android:textColor="@color/line2Color"
         android:textSize="25sp"
         android:textStyle="bold" />
@@ -52,7 +52,7 @@
             android:gravity="center"
             android:paddingHorizontal="15dp"
 
-            android:text="יציאה"
+            android:text="@string/exit"
             android:textColor="@color/line2Color"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -66,7 +66,7 @@
             android:background="@drawable/shape"
             android:gravity="center"
             android:paddingHorizontal="15dp"
-            android:text="המשך"
+            android:text="@string/_continue"
             android:textColor="@color/line2Color"
             android:textSize="25sp"
             android:textStyle="bold" />

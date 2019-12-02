@@ -14,7 +14,7 @@
         android:layout_marginTop="17dp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="כניסה למערכת"
+        android:text="@string/login"
         android:textColor="@color/colorRed"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -36,7 +36,7 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:padding="10dp"
-            android:hint="הכנס/י מספר פלאפון"
+            android:hint="@string/Enter_a_cell_phone_number"
             android:textColor="@color/line2Color"
             android:inputType="number"
             android:maxLength="10"
@@ -67,7 +67,7 @@
             android:gravity="center"
             android:paddingHorizontal="15dp"
 
-            android:text="סיום"
+            android:text="@string/finish"
             android:textColor="@color/line2Color"
             android:textSize="25sp"
             android:textStyle="bold" />

@@ -32,7 +32,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingHorizontal="4dp"
-            android:text="שאלון רפואי אונליין"
+            android:text="@string/online_medical_questionnaire"
             android:textColor="@color/line2Color"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -44,7 +44,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingHorizontal="4dp"
-            android:text="מכון טכנולגי חולון בשיתוף בית חולים שיבא"
+            android:text="@string/Holon_Technology_Institute_in_collaboration_with_Shiba_Hospital"
             android:textColor="@color/line2Color"
             android:textSize="12sp"
 
@@ -88,7 +88,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingHorizontal="4dp"
-            android:text="שלום"
+            android:text="@string/hello"
             android:textColor="@color/line2Color"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -113,7 +113,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:paddingHorizontal="4dp"
-        android:text="שאלון רפואי לתאריך"
+        android:text="@string/Medical_questionnaire_or_date"
         android:textColor="@color/line2Color"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -139,7 +139,7 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:layout_centerInParent="true"
-        android:text="תחילת שאלון"
+        android:text="@string/start_of_questionnaire"
         android:paddingHorizontal="15dp"
         android:textSize="25sp"
         android:background="@drawable/shape"

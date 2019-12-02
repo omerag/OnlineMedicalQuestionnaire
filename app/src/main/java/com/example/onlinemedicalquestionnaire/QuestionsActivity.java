@@ -207,7 +207,7 @@ public class QuestionsActivity extends AppCompatActivity {
                     question_body.setText(questions.get(curr_question).text);
                     size = questions.size();
                     curr_quetion_display = curr_question + 1;
-                    question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+                    question_title.setText(getString(R.string.question) +" "+ curr_quetion_display + getString(R.string.from) + size);
                     layoutSwitch();
                     answers_initialization();
                 } catch (JSONException e) {

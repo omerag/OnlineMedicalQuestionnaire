@@ -15,7 +15,7 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="הגעת לסוף השאלון"
+        android:text="@string/you_have_reached_the_end_of_the_questionnaire"
         android:textColor="@color/colorRed"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -36,7 +36,7 @@
             android:background="@drawable/shape"
             android:gravity="center"
             android:paddingHorizontal="20dp"
-            android:text="חזרה"
+            android:text="@string/back"
             android:textColor="@color/line2Color"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -51,7 +51,7 @@
             android:gravity="center"
             android:paddingHorizontal="15dp"
 
-            android:text="סיום"
+            android:text="@string/finish"
             android:textColor="@color/line2Color"
             android:textSize="25sp"
             android:textStyle="bold" />
