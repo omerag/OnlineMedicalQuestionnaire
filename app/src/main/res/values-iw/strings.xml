@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OnlineMedicalQuestionnaire</string>
+    <string name="app_name">שאלון רפואי דיגיטלי</string>
+    <string name="you_filled_out_the_questionnaire_for_this_date">מילאת את השאלון לתאריך זה</string>
+    <string name="no_input_try_again">לא הוכנס מספר, נסה שנית</string>
+    <string name="number_does_not_exist_in_the_system_please_try_again">מספר לא קיים במערכת, נסה שנית</string>
+    <string name="done">בוצע</string>
+    <string name="online_medical_questionnaire">שאלון רפואי אונליין</string>
+    <string name="a_medical_questionnaire_is_available_click_here_to_get_started">שאלון רפואי זמין, לחצ/י כאן כדי להתחיל</string>
+    <string name="server_error_please_try_later">שגיאה בשרת, אנא נסה מאוחר יותר</string>
+    <string name="question">שאלה</string>
+    <string name="from">מ</string>
+    <string name="successfully_sent">השליחה בוצעה בהצלחה</string>
 </resources>

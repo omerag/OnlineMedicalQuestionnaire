@@ -218,7 +218,7 @@ public class QuestionsActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("GETERROR", error.toString());
-                Toast.makeText(QuestionsActivity.this, "שגיאה בשרת, אנא נסה מאוחר יותר", Toast.LENGTH_LONG).show();
+                Toast.makeText(QuestionsActivity.this, getString(R.string.server_error_please_try_later), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -244,7 +244,7 @@ public class QuestionsActivity extends AppCompatActivity {
             curr_question--;
             curr_quetion_display = curr_question + 1;
             layoutSwitch();
-            question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+            question_title.setText(getString(R.string.question) + " "+ curr_quetion_display + getString(R.string.from) + size);
             question_body.setText(questions.get(curr_question).text);
 
             // Load answer:
@@ -273,7 +273,7 @@ public class QuestionsActivity extends AppCompatActivity {
             curr_question++;
             curr_quetion_display = curr_question + 1;
             layoutSwitch();
-            question_title.setText("שאלה " + curr_quetion_display + " מתוך " + size);
+            question_title.setText(getString(R.string.question) + " "+ curr_quetion_display + getString(R.string.from) + size);
             question_body.setText(questions.get(curr_question).text);
 
             // Load answer
@@ -417,13 +417,13 @@ public class QuestionsActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL + phone_number, objectJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Toast.makeText(QuestionsActivity.this, "השליחה בוצעה בהצלחה", Toast.LENGTH_LONG).show();
+                Toast.makeText(QuestionsActivity.this, getString(R.string.successfully_sent), Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(QuestionsActivity.this, "שגיאה בשרת, אנא נסה מאוחר יותר", Toast.LENGTH_LONG).show();
+                Toast.makeText(QuestionsActivity.this, getString(R.string.server_error_please_try_later), Toast.LENGTH_LONG).show();
             }
         });
 

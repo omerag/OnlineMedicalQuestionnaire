@@ -163,8 +163,8 @@ public class MainActivity extends AppCompatActivity {
                     phone_number = phone_et.getText().toString();
                     if (phone_number.equals(""))
                     {
-                        notValid_tv.setText("*לא הוכנס מספר, נסה שנית");
-                        Toast.makeText(MainActivity.this, "לא הוכנס מספר, נסה שנית", Toast.LENGTH_LONG).show();
+                        notValid_tv.setText(getString(R.string.no_input_try_again));
+                        Toast.makeText(MainActivity.this, getString(R.string.no_input_try_again), Toast.LENGTH_LONG).show();
                         return;
                     }
                     RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
@@ -176,8 +176,8 @@ public class MainActivity extends AppCompatActivity {
                             if (response.equals("Not Found"))
                             {
                                 getUser();
-                                Toast.makeText(MainActivity.this, "מספר לא קיים במערכת, נסה שנית", Toast.LENGTH_LONG).show();
-                                notValid_tv.setText("*מספר לא קיים במערכת, נסה שנית");
+                                Toast.makeText(MainActivity.this, getString(R.string.number_does_not_exist_in_the_system_please_try_again), Toast.LENGTH_LONG).show();
+                                notValid_tv.setText(getString(R.string.number_does_not_exist_in_the_system_please_try_again));
                             }
                             else {
                                 try {
@@ -256,8 +256,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (response.equals("false")) {
                     startBtn.setEnabled(false);
-                    startBtn.setText("בוצע");
-                    Toast.makeText(MainActivity.this, "מילאת את השאלון לתאריך זה", Toast.LENGTH_LONG).show();
+                    startBtn.setText(getString(R.string.done));
+                    Toast.makeText(MainActivity.this, getString(R.string.you_filled_out_the_questionnaire_for_this_date), Toast.LENGTH_LONG).show();
                 }
                 else {
 

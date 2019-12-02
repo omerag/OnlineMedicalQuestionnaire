@@ -46,8 +46,8 @@ public class NotificationHelper extends ContextWrapper {
         PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(),2,intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
-                .setContentTitle("שאלון רפואי אונליין")
-                .setContentText("שאלון רפואי זמין, לחצ/י כאן כדי להתחיל")
+                .setContentTitle(getString(R.string.online_medical_questionnaire))
+                .setContentText(getString(R.string.a_medical_questionnaire_is_available_click_here_to_get_started))
                 .setSmallIcon(android.R.drawable.star_on)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentIntent(pendingIntent);
