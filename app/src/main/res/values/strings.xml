@@ -25,4 +25,11 @@
     <string name="back">Back</string>
     <string name="login">Login</string>
     <string name="Enter_a_cell_phone_number">Enter a cell phone number</string>
+    <string name="more_than_half_he_cases">More than half the cases</string>
+    <string name="almost_always">Almost always</string>
+    <string name="about_half_the_cases">About half the cases</string>
+    <string name="less_than_half_he_cases">Less than half the cases</string>
+    <string name="not_at_all">Not at all</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 </resources>

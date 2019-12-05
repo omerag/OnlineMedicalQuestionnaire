@@ -41,7 +41,7 @@
                 android:background="@drawable/question_shape"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="גוף השאלה"
+                android:text="@string/question"
                 android:textColor="@color/line2Color"
                 android:textSize="27sp"
                 android:textStyle="bold" />
@@ -112,7 +112,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="8dp"
-                        android:text=" כן"
+                        android:text="@string/yes"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -126,7 +126,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="8dp"
-                        android:text=" לא"
+                        android:text="@string/no"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -164,7 +164,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="8dp"
-                        android:text=" בכלל לא"
+                        android:text="@string/not_at_all"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -178,7 +178,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="8dp"
-                        android:text=" פחות ממחצית המקרים"
+                        android:text="@string/less_than_half_he_cases"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -191,7 +191,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="8dp"
-                        android:text=" כמחצית המקרים"
+                        android:text="@string/about_half_the_cases"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -204,7 +204,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="8dp"
-                        android:text=" יותר ממחצית המקרים"
+                        android:text="@string/more_than_half_he_cases"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -217,7 +217,7 @@
                         android:background="@drawable/question_shape"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="8dp"
-                        android:text=" כמעט תמיד"
+                        android:text="@string/almost_always"
                         android:textColor="@color/line2Color"
                         android:textSize="20sp"
                         android:textStyle="bold" />
