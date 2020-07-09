@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sp;
     Button startBtn;
     String phone_number;
-    String URL = "http://212.179.205.15/shiba/name/";//0508881919
+    String URL = "http://185.60.170.80:8830/api/patient/details/";//<phone number> // http://185.60.170.80:8830/
     int start_hour, end_hour, curr_time;
     boolean isAnswer = false;
     NotificationManager manager;

@@ -53,11 +53,11 @@ public class QuestionsActivity extends AppCompatActivity {
     TextView question_body;
 
     String phone_number;
-    String URL = "http://212.179.205.15/shiba/patient/";//0508881919
+    String URL = "http://185.60.170.80:8830/api/patient/questions/";//0508881919
 
     RadioGroup answer_group;        // Quality
     RadioGroup answer_group_bin;    // Binary
-    NumberPicker numberPicker;      // Quantity
+    NumberPicker numberPicker;      // Quantity 0
 
     ArrayList<Question> questions;
     ArrayList<Answer> answers;
@@ -204,6 +204,11 @@ public class QuestionsActivity extends AppCompatActivity {
                         }
                     }
 
+                    if(arr.length() == 0){
+                        Log.d("QuestionActivity", "QuestionArray length = 0");
+
+                        return;
+                    }
                     question_body.setText(questions.get(curr_question).text);
                     size = questions.size();
                     curr_quetion_display = curr_question + 1;
@@ -221,6 +226,7 @@ public class QuestionsActivity extends AppCompatActivity {
                 Toast.makeText(QuestionsActivity.this, getString(R.string.server_error_please_try_later), Toast.LENGTH_LONG).show();
             }
         });
+
 
         queue.add(jsonObjectRequest);
         queue.start();
