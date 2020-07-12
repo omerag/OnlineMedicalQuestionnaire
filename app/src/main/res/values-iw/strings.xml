@@ -33,4 +33,5 @@
     <string name="not_at_all">כלל לא</string>
     <string name="no">לא</string>
     <string name="yes">כן</string>
+    <string name="questionnaire_already_answered_today">השאלון כבר נענה היום</string>
 </resources>

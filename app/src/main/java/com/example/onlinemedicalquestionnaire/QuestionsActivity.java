@@ -54,6 +54,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
     String phone_number;
     String URL = "http://185.60.170.80:8830/api/patient/questions/";//0508881919
+    String URL_REC = "http://185.60.170.80:8830/api/patient/records/";
 
     RadioGroup answer_group;        // Quality
     RadioGroup answer_group_bin;    // Binary
@@ -82,6 +83,8 @@ public class QuestionsActivity extends AppCompatActivity {
         setContentView(R.layout.questions_activity);
 
         sp = getSharedPreferences("sp", MODE_PRIVATE);
+
+
         phone_number = sp.getString("phone_number","");
         questions = new ArrayList<>();
         answers = new ArrayList<>();
@@ -223,7 +226,7 @@ public class QuestionsActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("GETERROR", error.toString());
-                Toast.makeText(QuestionsActivity.this, getString(R.string.server_error_please_try_later), Toast.LENGTH_LONG).show();
+                Toast.makeText(QuestionsActivity.this, getString(R.string.questionnaire_already_answered_today), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -420,7 +423,7 @@ public class QuestionsActivity extends AppCompatActivity {
         objectJson.put("arr", arr);
 
         RequestQueue queue = Volley.newRequestQueue(QuestionsActivity.this);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL + phone_number, objectJson, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL_REC + phone_number, objectJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Toast.makeText(QuestionsActivity.this, getString(R.string.successfully_sent), Toast.LENGTH_LONG).show();

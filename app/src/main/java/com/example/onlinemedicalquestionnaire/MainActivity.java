@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
     public void getUser() {
 
         sp = getSharedPreferences("sp", MODE_PRIVATE);
-
+        sp.edit().clear().apply();
         if (sp.contains("name")) {
             patientName = sp.getString("name", "");
             phone_number = sp.getString("phone_number","");
