@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">استبيان طبية اونلاينי</string>
+    <string name="you_filled_out_the_questionnaire_for_this_date">لقد ملأت الاستبيان لهذا التاريخ</string>
+    <string name="no_input_try_again">لم يتم إدخال رقم الهاتف ، يرجى المحاولة مرة أخرى</string>
+    <string name="number_does_not_exist_in_the_system_please_try_again">رقم الهاتف غير موجود بالنظام</string>
+    <string name="done">تم القيام به</string>
+    <string name="online_medical_questionnaire">استمارة طبية اونلاين</string>
+    <string name="a_medical_questionnaire_is_available_click_here_to_get_started">الاستبيان متوفر, اضغط/ي هنا للبدء</string>
+    <string name="server_error_please_try_later">خطأ في الخادم ، يرجى المحاولة لاحقًا</string>
+    <string name="question">سؤال</string>
+    <string name="from">من</string>
+    <string name="successfully_sent">الارسال تم بنجاح</string>
+    <string name="Holon_Technology_Institute_in_collaboration_with_Shiba_Hospital">الكلية الاكاديمية حولون</string>
+    <string name="hello">سلام وعليكم </string>
+    <string name="Medical_questionnaire_or_date">استبيان طبية التاريخ</string>
+    <string name="start_of_questionnaire">داية الاستبيانן</string>
+    <string name="please_select_an_answer">اختر اجابة</string>
+    <string name="confirm">موافقة</string>
+    <string name="you_have_chosen_to_leave_the_questionnaire">اخترت الخروج من الاستبيان</string>
+    <string name="your_answers_will_not_be_saved">الاجابة لن تحفظ</string>
+    <string name="_continue">تقدم</string>
+    <string name="exit">الخروج</string>
+    <string name="you_have_reached_the_end_of_the_questionnaire">وصلت لنهاية الاستبيان</string>
+    <string name="finish">النهاية</string>
+    <string name="back">رجوع</string>
+    <string name="login">الدخول للنطام</string>
+    <string name="Enter_a_cell_phone_number">ادخل رقم الهاتف</string>
+    <string name="more_than_half_he_cases">أكثر من نصف الحالات</string>
+    <string name="about_half_the_cases">نصف الحالات</string>
+    <string name="almost_always">تقريبا دائما</string>
+    <string name="less_than_half_he_cases">اقل من نصف الحالات</string>
+    <string name="not_at_all">على الاطلاق</string>
+    <string name="no">لا</string>
+    <string name="yes">نعم</string>
+    <string name="questionnaire_already_answered_today">تم بالفعل الرد على الاستبيان اليوم</string>
+</resources>
