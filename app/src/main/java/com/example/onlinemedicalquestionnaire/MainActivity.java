@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject rootObject = new JSONObject(response);
                         start_hour = rootObject.getInt("startHour");
                         end_hour = rootObject.getInt("endHour");
-                        sp.edit().putInt("start_hour", start_hour).commit();
+                        sp.edit().putInt("start_hour", start_hour).apply();
 
                         Calendar calendar = Calendar.getInstance();
                         SimpleDateFormat mdformat = new SimpleDateFormat("HH");
