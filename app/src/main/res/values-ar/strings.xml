@@ -34,4 +34,6 @@
     <string name="no">لا</string>
     <string name="yes">نعم</string>
     <string name="questionnaire_already_answered_today">تم بالفعل الرد على الاستبيان اليوم</string>
+    <string name="enter_pass_from_sms">يرجى إدخال الرقم الذي تلقيته في الرسالة</string>
+    <string name="wrong_pass">كلمة مرور خاطئة ، يرجى المحاولة مرة أخرى.</string>
 </resources>

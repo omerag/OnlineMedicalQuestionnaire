@@ -2,23 +2,16 @@ package com.example.onlinemedicalquestionnaire;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,22 +23,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sp;
     Button startBtn;
     String phone_number;
+    String password;
     String URL = "http://185.60.170.80:8830/api/patient/details/";//<phone number> // http://185.60.170.80:8830/
+    String URL_AUTH = "http://185.60.170.80:8830/api/patient/sms/";
     int start_hour, end_hour, curr_time;
     boolean isAnswer = false;
     NotificationManager manager;
@@ -135,76 +127,98 @@ public class MainActivity extends AppCompatActivity {
     public void getUser() {
 
         sp = getSharedPreferences("sp", MODE_PRIVATE);
-        sp.edit().clear().apply();
+        //sp.edit().clear().apply();
         if (sp.contains("name")) {
             patientName = sp.getString("name", "");
             phone_number = sp.getString("phone_number","");
+            password = sp.getString("password","");
             start_hour = sp.getInt("startHour",19);
             userNameTv.setText(userNameTv.getText() + " " + patientName);
 
             check_Hours();
 
         } else {
-            // Login dialog:
-            final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).create();
-            final View dialogView = getLayoutInflater().inflate(R.layout.login_dialog, null);
-            TextView login_tv = dialogView.findViewById(R.id.login_tv);
-            final TextView phone_et = dialogView.findViewById(R.id.phone_et);
-            final TextView notValid_tv = dialogView.findViewById(R.id.notValid_tv);
-            Button login_btn = dialogView.findViewById(R.id.login_btn);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setView(dialogView);
-            dialog.setCanceledOnTouchOutside(false);
 
-            login_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            userAuth();
 
-                    phone_number = phone_et.getText().toString();
-                    if (phone_number.equals(""))
-                    {
-                        notValid_tv.setText(getString(R.string.no_input_try_again));
-                        Toast.makeText(MainActivity.this, getString(R.string.no_input_try_again), Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                    StringRequest stringRequest = new StringRequest(URL + phone_number, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-
-
-                            if (response.equals("Not Found"))
-                            {
-                                getUser();
-                                Toast.makeText(MainActivity.this, getString(R.string.number_does_not_exist_in_the_system_please_try_again), Toast.LENGTH_LONG).show();
-                                notValid_tv.setText(getString(R.string.number_does_not_exist_in_the_system_please_try_again));
-                            }
-                            else {
-                                try {
-                                    JSONObject rootObject = new JSONObject(response);
-                                    String name = rootObject.getString("name");
-                                    userNameTv.setText(name);
-                                    sp.edit().putString("name",name).commit();
-                                    sp.edit().putString("phone_number", phone_number).commit();
-                                    check_Hours();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                        }
-                    });
-
-                    queue.add(stringRequest);
-                    dialog.dismiss();
-                }
-            });
-            dialog.show();
         }
+    }
+
+    private void userAuth(){
+        final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).create();
+        final View dialogView = getLayoutInflater().inflate(R.layout.login_dialog, null);
+        TextView login_tv = dialogView.findViewById(R.id.login_tv);
+        final TextView phone_et = dialogView.findViewById(R.id.phone_et);
+        final TextView notValid_tv = dialogView.findViewById(R.id.notValid_tv);
+        final Button login_btn = dialogView.findViewById(R.id.login_btn);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setView(dialogView);
+        dialog.setCanceledOnTouchOutside(false);
+
+        login_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                phone_number = phone_et.getText().toString();
+                phone_et.setText(null);
+                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                StringRequest stringRequest = new StringRequest(URL_AUTH + phone_number, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        phone_et.setHint(getString(R.string.enter_pass_from_sms));
+
+                        //wait for user to enter sms
+                        login_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                password = phone_et.getText().toString();
+                                RequestQueue queue1 = Volley.newRequestQueue(MainActivity.this);
+                                StringRequest stringRequest1 = new StringRequest(URL_AUTH + phone_number + "/" + password, new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        //access granted
+
+                                            try {
+                                                JSONObject rootObject = new JSONObject(response);
+                                                String name = rootObject.getString("name");
+                                                userNameTv.setText(name);
+                                                sp.edit().putString("name",name).apply();
+                                                sp.edit().putString("phone_number", phone_number).apply();
+                                                sp.edit().putString("password", password).apply();
+                                                check_Hours();
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        dialog.dismiss();
+                                    }
+                                }, new ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(MainActivity.this, getString(R.string.wrong_pass), Toast.LENGTH_LONG).show();
+
+                                    }
+                                });
+
+                                queue1.add(stringRequest1);
+                            }
+                        });
+
+                    }
+                }, new ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, getString(R.string.number_does_not_exist_in_the_system_please_try_again), Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+                queue.add(stringRequest);
+            }
+        });
+
+
+        dialog.show();
     }
 
     class CustomAdapter extends BaseAdapter {
@@ -285,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
-        }, new Response.ErrorListener() {
+        }, new ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
@@ -295,7 +309,6 @@ public class MainActivity extends AppCompatActivity {
         queue.add(stringRequest);
 
     }
-
 
     public void onTimeSet(int hour)
     {
@@ -322,3 +335,66 @@ public class MainActivity extends AppCompatActivity {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 }
+
+
+ /*
+            // Login dialog:
+            final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).create();
+            final View dialogView = getLayoutInflater().inflate(R.layout.login_dialog, null);
+            TextView login_tv = dialogView.findViewById(R.id.login_tv);
+            final TextView phone_et = dialogView.findViewById(R.id.phone_et);
+            final TextView notValid_tv = dialogView.findViewById(R.id.notValid_tv);
+            Button login_btn = dialogView.findViewById(R.id.login_btn);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setView(dialogView);
+            dialog.setCanceledOnTouchOutside(false);
+
+            login_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    phone_number = phone_et.getText().toString();
+                    if (phone_number.equals(""))
+                    {
+                        notValid_tv.setText(getString(R.string.no_input_try_again));
+                        Toast.makeText(MainActivity.this, getString(R.string.no_input_try_again), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                    StringRequest stringRequest = new StringRequest(URL + phone_number, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+
+                            if (response.equals("Not Found"))
+                            {
+                                getUser();
+                                Toast.makeText(MainActivity.this, getString(R.string.number_does_not_exist_in_the_system_please_try_again), Toast.LENGTH_LONG).show();
+                                notValid_tv.setText(getString(R.string.number_does_not_exist_in_the_system_please_try_again));
+                            }
+                            else {
+                                try {
+                                    JSONObject rootObject = new JSONObject(response);
+                                    String name = rootObject.getString("name");
+                                    userNameTv.setText(name);
+                                    sp.edit().putString("name",name).commit();
+                                    sp.edit().putString("phone_number", phone_number).commit();
+                                    check_Hours();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }, new ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+
+                    queue.add(stringRequest);
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+            */

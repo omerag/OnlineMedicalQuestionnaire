@@ -221,12 +221,18 @@ public class QuestionsActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                finally {
+                    Log.d("QuestaionActivity", response.toString());
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("GETERROR", error.toString());
                 Toast.makeText(QuestionsActivity.this, getString(R.string.questionnaire_already_answered_today), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(QuestionsActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 

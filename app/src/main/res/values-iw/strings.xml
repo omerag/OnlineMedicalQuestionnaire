@@ -34,4 +34,6 @@
     <string name="no">לא</string>
     <string name="yes">כן</string>
     <string name="questionnaire_already_answered_today">השאלון כבר נענה היום</string>
+    <string name="enter_pass_from_sms">בבקשה הכנס את המספר שקיבלת במסרון</string>
+    <string name="wrong_pass">הסיסמה שגויה, בבקשה נסה שנית</string>
 </resources>
