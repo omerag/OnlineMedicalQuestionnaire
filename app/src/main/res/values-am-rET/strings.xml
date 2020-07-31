@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ዲጂታል የሕክምና መጠይቅ</string>
+    <string name="you_filled_out_the_questionnaire_for_this_date">ለዚህ ቀን መጠይቅ ሞልተው ነበር</string>
+    <string name="no_input_try_again">ምንም ቁጥር አልገባም ፣ እባክዎ እንደገና ይሞክሩ</string>
+    <string name="number_does_not_exist_in_the_system_please_try_again">ቁጥር በስርዓት ውስጥ የለም ፣ እባክዎ እንደገና ይሞክሩ</string>
+    <string name="done">ተጠናቅቋል</string>
+    <string name="online_medical_questionnaire">የመስመር ላይ የሕክምና መጠይቅ</string>
+    <string name="a_medical_questionnaire_is_available_click_here_to_get_started">የህክምና መጠይቅ ይገኛል ፣ ለመጀመር እዚህ ጠቅ ያድርጉ</string>
+    <string name="server_error_please_try_later">በማጠራቀሚየው ችግር  አለ ቆይተው ይሞክሩ</string>
+    <string name="question">ጥያቄ</string>
+    <string name="from">ከ</string>
+    <string name="successfully_sent">በተሳካ ሁኔታ በመላክ ላይ</string>
+    <string name="Holon_Technology_Institute_in_collaboration_with_Shiba_Hospital">የሆሎን የቴክኖሎጂ ተቋም</string>
+    <string name="hello">ሰላም</string>
+    <string name="Medical_questionnaire_or_date">የህክምና መጠይቅ ቀን</string>
+    <string name="start_of_questionnaire">የጥያቄ መጀመያ</string>
+    <string name="please_select_an_answer">እባክዎ መልስ ይምረጡ</string>
+    <string name="confirm">ፋቃድ</string>
+    <string name="you_have_chosen_to_leave_the_questionnaire">መጠይቁን ለመተው መርጠዋል</string>
+    <string name="your_answers_will_not_be_saved">መልስዎ አይጠበቁም</string>
+    <string name="_continue">ቀጠለ</string>
+    <string name="exit">መውጫ</string>
+    <string name="you_have_reached_the_end_of_the_questionnaire">የመጨረሻው ጥያቄ ደረስክ</string>
+    <string name="finish">ጨርስ</string>
+    <string name="back">ተመለስ</string>
+    <string name="login">የስሦተም መግቢያ</string>
+    <string name="Enter_a_cell_phone_number">የሞባይል ስልክ ቁጥር ያስገቡ</string>
+    <string name="more_than_half_he_cases">ከግማሽ በላይ የሚሆኑት ጉዳዮች</string>
+    <string name="about_half_the_cases">ወደ ግማሽ ያህል የሚሆኑት ጉዳዮች</string>
+    <string name="almost_always">ሁልጊዜ ማለት ይቻላል</string>
+    <string name="less_than_half_he_cases">ከጉዳዮቹ ከግማሽ በታች</string>
+    <string name="not_at_all">በጭራሽ</string>
+    <string name="no">አይ</string>
+    <string name="yes">አዎ</string>
+    <string name="questionnaire_already_answered_today">ለዚህ ቀን መጠይቅ ሞልተው ነበር</string>
+    <string name="enter_pass_from_sms">እባክዎ ቁጥሩን ከኤስኤምኤስ ያስገቡ</string>
+    <string name="wrong_pass">የተሳሳተ የይለፍ ቃል ፣ እባክዎ እንደገና ይሞክሩ።</string>
+
+
+</resources>

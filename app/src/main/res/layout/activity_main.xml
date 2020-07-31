@@ -57,7 +57,7 @@
             android:layout_height="53dp"
             android:layout_gravity="center"
             android:layout_marginVertical="10dp"
-            android:src="@drawable/smalim"
+            android:src="@drawable/hit_logo"
 
             />
 
