@@ -36,7 +36,7 @@
             android:textColor="@color/line2Color"
             android:textSize="30sp"
             android:textStyle="bold" />
-        <!--
+
         <TextView
             android:id="@+id/lowlandsSouth"
             android:layout_width="wrap_content"
@@ -44,12 +44,12 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingHorizontal="4dp"
-            android:text="@string/Holon_Technology_Institute_in_collaboration_with_Shiba_Hospital"
+            android:text="@string/Holon_Technology_Institute"
             android:textColor="@color/line2Color"
             android:textSize="12sp"
 
             />
-        -->
+
 
         <ImageView
             android:id="@+id/pic"
